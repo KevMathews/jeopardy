@@ -20,7 +20,7 @@ export default function App(props) {
 	// }, []);
 	async function handleFetch() {
 		try {
-			const response = await fetch('http://jservice.io/api/random');
+			const response = await fetch('https://jservice.io/api/random');
 			const data = await response.json();
 			updateQuestion(data);
 			setIsVisible(false);
