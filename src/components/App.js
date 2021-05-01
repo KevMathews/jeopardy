@@ -83,7 +83,7 @@ export default function App(props) {
 						<hr />
 
 						<div className="jeopardyScore">
-							<span className="gameScore">Current Score:&nbsp; {score}</span>
+							<span className="gameScore">Score:&nbsp; {score}</span>
 						</div>
 						<br />
 
