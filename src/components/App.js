@@ -4,6 +4,8 @@ import Question from './Question';
 import Game from './Game';
 import Value from './Value';
 import Category from './Category';
+// import '../css/styles.css';
+
 export default function App(props) {
 	const [question, updateQuestion] = useState({});
 	const [isVisible, setIsVisible] = useState(false);
