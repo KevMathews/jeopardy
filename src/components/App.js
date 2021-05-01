@@ -47,8 +47,9 @@ export default function App(props) {
 				<hr className="jeopardyDivide" />
 				<div className="gameArea">
 					<div className="topGameArea">
-						<div className="leftSide">
-							<span className="categoryTitle">Category:</span>
+						<span className="categoryTitle">Category:</span>
+						<span className="categoryTitle">Value:</span>
+						<div className="leftSide catDiv">
 							<br />
 							{Object.keys(question).length ? (
 								<Category question={question} />
@@ -56,8 +57,7 @@ export default function App(props) {
 								''
 							)}
 						</div>
-						<div className="rightSide">
-							<span className="categoryTitle">Value:</span>
+						<div className="rightSide valDiv">
 							<br />
 							{Object.keys(question).length ? (
 								<Value question={question} />
