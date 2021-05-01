@@ -46,68 +46,62 @@ export default function App(props) {
 				</div>
 				<hr className="jeopardyDivide" />
 				<div className="gameArea">
-					<div className="gameArea2">
-						<div className="topGameArea">
-							<div className="leftSide">
-								<span className="categoryTitle">Category:</span>
-								<br />
-								{Object.keys(question).length ? (
-									<Category question={question} />
-								) : (
-									''
-								)}
-							</div>
-							<div className="rightSide">
-								<span className="categoryTitle">Value:</span>
-								<br />
-								{Object.keys(question).length ? (
-									<Value question={question} />
-								) : (
-									''
-								)}
-							</div>
-						</div>
-						<hr />
-						<span className="gameQuestion">Question:</span>
-						<div className="questionArea">
+					<div className="topGameArea">
+						<div className="leftSide">
+							<span className="categoryTitle">Category:</span>
 							<br />
 							{Object.keys(question).length ? (
-								<Question question={question} />
+								<Category question={question} />
 							) : (
 								''
 							)}
 						</div>
-						<hr />
-						<div className="jeopardyScore">
-							<span className="gameScore">Score:&nbsp; {score}</span>
-						</div>
-						<br />
-						<div className="scoreArea">
-							<div className="scoreDown">
-								<button className="scoreDownButton" onClick={decrement}>
-									-
-								</button>
-							</div>
-							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-							<div className="scoreUp">
-								<button className="scoreUpButton" onClick={increment}>
-									+
-								</button>
-							</div>
-						</div>
-						<br />
-						<hr />
-						<span className="answerTitle">Answer:</span>
-						<div
-							className="answerArea"
-							style={{ display: isVisible ? 'block' : 'none' }}
-						>
+						<div className="rightSide">
+							<span className="categoryTitle">Value:</span>
+							<br />
 							{Object.keys(question).length ? (
-								<Answer question={question} />
+								<Value question={question} />
 							) : (
 								''
 							)}
 						</div>
+					</div>
+					<hr />
+					<span className="gameQuestion">Question:</span>
+					<div className="questionArea">
+						<br />
+						{Object.keys(question).length ? (
+							<Question question={question} />
+						) : (
+							''
+						)}
+					</div>
+					<hr />
+					<div className="jeopardyScore">
+						<span className="gameScore">Score:&nbsp; {score}</span>
+					</div>
+					<br />
+					<div className="scoreArea">
+						<div className="scoreDown">
+							<button className="scoreDownButton" onClick={decrement}>
+								-
+							</button>
+						</div>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<div className="scoreUp">
+							<button className="scoreUpButton" onClick={increment}>
+								+
+							</button>
+						</div>
+					</div>
+					<br />
+					<hr />
+					<span className="answerTitle">Answer:</span>
+					<div
+						className="answerArea"
+						style={{ display: isVisible ? 'block' : 'none' }}
+					>
+						{Object.keys(question).length ? <Answer question={question} /> : ''}
 					</div>
 				</div>
 			</div>
