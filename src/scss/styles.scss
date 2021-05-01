@@ -52,6 +52,12 @@ body {
   margin-top: -30px;
   transform: translateX(-15px);
 }
+.jeopardyCategory {
+  transform: translateX(5px);
+}
+.jeopardyValue {
+  transform: translateX(-5px);
+}
 .categoryTitle,
 .answerTitle,
 .gameScore,
