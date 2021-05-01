@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Answer from './Answer';
 import Question from './Question';
-import Game from './Game';
 import Value from './Value';
 import Category from './Category';
-// import '/css/styles.css';
 
 export default function App(props) {
 	const [question, updateQuestion] = useState({});
@@ -59,7 +57,6 @@ export default function App(props) {
 									''
 								)}
 							</div>
-
 							<div className="rightSide">
 								<span className="categoryTitle">Value:</span>
 								<br />
@@ -81,12 +78,10 @@ export default function App(props) {
 							)}
 						</div>
 						<hr />
-
 						<div className="jeopardyScore">
 							<span className="gameScore">Score:&nbsp; {score}</span>
 						</div>
 						<br />
-
 						<div className="scoreArea">
 							<div className="scoreDown">
 								<button className="scoreDownButton" onClick={decrement}>
@@ -102,7 +97,6 @@ export default function App(props) {
 						</div>
 						<br />
 						<hr />
-
 						<span className="answerTitle">Answer:</span>
 						<div
 							className="answerArea"
