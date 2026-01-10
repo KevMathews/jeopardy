@@ -4,6 +4,7 @@ import Question from './Question';
 import Value from './Value';
 import Category from './Category';
 import GameSetup from './GameSetup';
+import GameBoard from './GameBoard';
 import { GAME_PHASES, INITIAL_GAME_STATE } from '../constants/gameConfig';
 import { initializeGame, startRound1 } from '../utils/gameStateManager';
 import { loadGameState, clearGameState } from '../utils/localStorageService';
@@ -56,6 +57,10 @@ export default function App(props) {
 		setGameState(INITIAL_GAME_STATE);
 	};
 
+	const handleCellClick = (cellData) => {
+		console.log('Cell clicked:', cellData);
+	};
+
 	async function handleFetch() {
 		try {
 			const categoriesRes = await fetch('https://rithm-jeopardy.herokuapp.com/api/categories?count=100');
@@ -75,6 +80,15 @@ export default function App(props) {
 
 	if (gameState.phase === GAME_PHASES.SETUP) {
 		return <GameSetup onStartGame={handleStartGame} />;
+	}
+
+	if (gameState.phase === GAME_PHASES.ROUND_1 || gameState.phase === GAME_PHASES.ROUND_2) {
+		return (
+			<GameBoard
+				gameState={gameState}
+				onCellClick={handleCellClick}
+			/>
+		);
 	}
 
 	return (
