@@ -1,0 +1,308 @@
+@import 'variables';
+
+.gameBoardContainer {
+	width: 100%;
+	min-height: 100vh;
+	background-color: $primary-blue;
+	padding: 20px;
+	box-sizing: border-box;
+}
+
+.gameBoardHeader {
+	text-align: center;
+	margin-bottom: 20px;
+
+	.jeopardyLogoSmall {
+		max-width: 400px;
+		width: 100%;
+		height: auto;
+	}
+}
+
+.playerScoreboard {
+	background-color: $white;
+	border: $border-thickness solid $yellow-accent;
+	border-radius: $border-radius;
+	padding: 15px;
+	margin: 0 auto 30px;
+	max-width: 1200px;
+
+	.scoreboardTitle {
+		font-size: $font-size-large;
+		font-weight: bold;
+		color: $primary-blue;
+		margin-bottom: 15px;
+		text-align: center;
+	}
+
+	.playerList {
+		display: flex;
+		justify-content: space-around;
+		flex-wrap: wrap;
+		gap: 15px;
+	}
+
+	.playerCard {
+		background-color: $background-gray;
+		border: 2px solid $light-gray;
+		border-radius: $border-radius;
+		padding: 12px 20px;
+		min-width: 150px;
+		transition: all $transition-speed;
+
+		&.active {
+			border-color: $yellow-accent;
+			background-color: $yellow-accent;
+			box-shadow: 0 0 15px rgba(255, 255, 0, 0.5);
+		}
+
+		.playerName {
+			font-size: $font-size-medium;
+			font-weight: bold;
+			color: $primary-blue;
+			margin-bottom: 5px;
+
+			.turnIndicator {
+				color: $incorrect-red;
+				font-size: $font-size-large;
+			}
+		}
+
+		.playerScore {
+			font-size: $font-size-large;
+			font-weight: bold;
+
+			&.positive {
+				color: $correct-green;
+			}
+
+			&.negative {
+				color: $incorrect-red;
+			}
+
+			&.zero {
+				color: $dark-gray;
+			}
+		}
+	}
+}
+
+.gameBoard {
+	max-width: 1200px;
+	margin: 0 auto;
+	background-color: $primary-blue;
+	padding: 20px;
+	border-radius: $border-radius;
+}
+
+.categoryHeaders {
+	display: grid;
+	grid-template-columns: repeat(6, 1fr);
+	gap: $cell-spacing;
+	margin-bottom: $cell-spacing;
+}
+
+.categoryHeader {
+	background-color: $primary-blue;
+	border: $border-thickness solid $yellow-accent;
+	border-radius: $border-radius;
+	padding: 15px 10px;
+	text-align: center;
+	min-height: 80px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	.categoryHeaderTitle {
+		color: $white;
+		font-size: $font-size-medium;
+		font-weight: bold;
+		text-transform: uppercase;
+		word-wrap: break-word;
+	}
+}
+
+.boardGrid {
+	display: flex;
+	flex-direction: column;
+	gap: $cell-spacing;
+}
+
+.boardRow {
+	display: grid;
+	grid-template-columns: repeat(6, 1fr);
+	gap: $cell-spacing;
+}
+
+.boardCell {
+	background-color: $primary-blue;
+	border: $border-thickness solid $yellow-accent;
+	border-radius: $border-radius;
+	min-height: $desktop-cell-height;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	transition: all $transition-speed;
+	font-size: $font-size-large;
+	font-weight: bold;
+	color: $yellow-accent;
+
+	&:hover:not(:disabled) {
+		background-color: darken($primary-blue, 5%);
+		transform: scale(1.05);
+		box-shadow: 0 0 20px rgba(255, 255, 0, 0.6);
+	}
+
+	&:active:not(:disabled) {
+		transform: scale(0.98);
+	}
+
+	&.answered {
+		background-color: darken($primary-blue, 10%);
+		border-color: $dark-gray;
+		cursor: not-allowed;
+		opacity: 0.4;
+	}
+
+	&:disabled {
+		cursor: not-allowed;
+	}
+
+	.cellValue {
+		font-size: $font-size-large;
+		color: $yellow-accent;
+	}
+}
+
+.gameSetupContainer {
+	width: 100%;
+	min-height: 100vh;
+	background-color: $primary-blue;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 20px;
+	box-sizing: border-box;
+}
+
+.gameSetupCard {
+	background-color: $white;
+	border: 5px solid $yellow-accent;
+	border-radius: $border-radius * 2;
+	padding: 40px;
+	max-width: 600px;
+	width: 100%;
+	box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+
+	.setupTitle {
+		color: $primary-blue;
+		font-size: 48px;
+		text-align: center;
+		margin-bottom: 40px;
+		font-weight: bold;
+	}
+
+	.setupSection {
+		margin-bottom: 30px;
+
+		.sectionTitle {
+			color: $primary-blue;
+			font-size: $font-size-large;
+			margin-bottom: 15px;
+			font-weight: bold;
+		}
+
+		.playerCountButtons {
+			display: flex;
+			gap: 15px;
+			justify-content: center;
+
+			.playerCountButton {
+				background-color: $background-gray;
+				border: 3px solid $light-gray;
+				border-radius: $border-radius;
+				padding: 15px 30px;
+				font-size: $font-size-medium;
+				font-weight: bold;
+				cursor: pointer;
+				transition: all $transition-speed;
+
+				&:hover {
+					background-color: $yellow-accent;
+					border-color: $yellow-accent;
+				}
+
+				&.active {
+					background-color: $primary-blue;
+					border-color: $primary-blue;
+					color: $white;
+				}
+			}
+		}
+
+		.playerInputs {
+			display: flex;
+			flex-direction: column;
+			gap: 15px;
+
+			.playerInputGroup {
+				display: flex;
+				align-items: center;
+				gap: 10px;
+
+				.playerLabel {
+					font-size: $font-size-medium;
+					font-weight: bold;
+					color: $primary-blue;
+					min-width: 80px;
+				}
+
+				.playerInput {
+					flex: 1;
+					padding: 12px;
+					border: 2px solid $light-gray;
+					border-radius: $border-radius;
+					font-size: $font-size-medium;
+					transition: border-color $transition-speed;
+
+					&:focus {
+						outline: none;
+						border-color: $primary-blue;
+					}
+				}
+			}
+		}
+
+		.startGameButton {
+			width: 100%;
+			background-color: $correct-green;
+			border: none;
+			border-radius: $border-radius;
+			padding: 20px;
+			font-size: $font-size-large;
+			font-weight: bold;
+			color: $white;
+			cursor: pointer;
+			transition: all $transition-speed;
+
+			&:hover:not(:disabled) {
+				background-color: darken($correct-green, 10%);
+				transform: translateY(-2px);
+				box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+			}
+
+			&:disabled {
+				background-color: $light-gray;
+				cursor: not-allowed;
+			}
+		}
+
+		.setupHint {
+			text-align: center;
+			color: $dark-gray;
+			font-size: $font-size-small;
+			margin-top: 10px;
+		}
+	}
+}
