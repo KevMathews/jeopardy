@@ -1,0 +1,222 @@
+@import 'variables';
+
+@media (max-width: $breakpoint-tablet) {
+	.gameBoardHeader {
+		.jeopardyLogoSmall {
+			max-width: 300px;
+		}
+	}
+
+	.playerScoreboard {
+		padding: 10px;
+
+		.scoreboardTitle {
+			font-size: $font-size-medium;
+		}
+
+		.playerList {
+			gap: 10px;
+		}
+
+		.playerCard {
+			min-width: 120px;
+			padding: 10px 15px;
+
+			.playerName {
+				font-size: $font-size-small;
+			}
+
+			.playerScore {
+				font-size: $font-size-medium;
+			}
+		}
+	}
+
+	.gameBoard {
+		padding: 15px;
+	}
+
+	.categoryHeader {
+		min-height: 70px;
+		padding: 10px 5px;
+
+		.categoryHeaderTitle {
+			font-size: $font-size-small;
+		}
+	}
+
+	.boardCell {
+		min-height: $tablet-cell-height;
+		font-size: $font-size-medium;
+
+		.cellValue {
+			font-size: $font-size-medium;
+		}
+	}
+
+	.gameSetupCard {
+		padding: 30px;
+
+		.setupTitle {
+			font-size: 36px;
+		}
+	}
+}
+
+@media (max-width: $breakpoint-mobile) {
+	.gameBoardContainer {
+		padding: 10px;
+	}
+
+	.gameBoardHeader {
+		margin-bottom: 15px;
+
+		.jeopardyLogoSmall {
+			max-width: 250px;
+		}
+	}
+
+	.playerScoreboard {
+		padding: 10px;
+		margin-bottom: 20px;
+
+		.scoreboardTitle {
+			font-size: $font-size-small;
+			margin-bottom: 10px;
+		}
+
+		.playerList {
+			flex-direction: column;
+			gap: 8px;
+		}
+
+		.playerCard {
+			min-width: 100%;
+			padding: 8px 12px;
+
+			.playerName {
+				font-size: $font-size-small;
+
+				.turnIndicator {
+					font-size: $font-size-medium;
+				}
+			}
+
+			.playerScore {
+				font-size: $font-size-medium;
+			}
+		}
+	}
+
+	.gameBoard {
+		padding: 10px;
+	}
+
+	.categoryHeaders {
+		grid-template-columns: repeat(3, 1fr);
+		gap: 6px;
+	}
+
+	.categoryHeader {
+		min-height: 60px;
+		padding: 8px 4px;
+
+		.categoryHeaderTitle {
+			font-size: 12px;
+		}
+	}
+
+	.boardGrid {
+		gap: 6px;
+	}
+
+	.boardRow {
+		grid-template-columns: repeat(3, 1fr);
+		gap: 6px;
+	}
+
+	.boardCell {
+		min-height: $mobile-cell-height;
+		font-size: $font-size-small;
+
+		&:hover:not(:disabled) {
+			transform: scale(1.03);
+		}
+
+		.cellValue {
+			font-size: $font-size-small;
+		}
+	}
+
+	.gameSetupContainer {
+		padding: 15px;
+	}
+
+	.gameSetupCard {
+		padding: 20px;
+		border-width: 3px;
+
+		.setupTitle {
+			font-size: 28px;
+			margin-bottom: 30px;
+		}
+
+		.setupSection {
+			margin-bottom: 20px;
+
+			.sectionTitle {
+				font-size: $font-size-medium;
+				margin-bottom: 10px;
+			}
+
+			.playerCountButtons {
+				flex-direction: column;
+				gap: 10px;
+
+				.playerCountButton {
+					width: 100%;
+					padding: 12px;
+					font-size: $font-size-small;
+				}
+			}
+
+			.playerInputs {
+				gap: 10px;
+
+				.playerInputGroup {
+					flex-direction: column;
+					align-items: flex-start;
+
+					.playerLabel {
+						font-size: $font-size-small;
+					}
+
+					.playerInput {
+						width: 100%;
+						padding: 10px;
+						font-size: $font-size-small;
+					}
+				}
+			}
+
+			.startGameButton {
+				padding: 15px;
+				font-size: $font-size-medium;
+			}
+
+			.setupHint {
+				font-size: 12px;
+			}
+		}
+	}
+}
+
+@media (min-width: $breakpoint-tablet + 1) {
+	.boardCell {
+		min-height: $desktop-cell-height;
+	}
+
+	.categoryHeader {
+		min-height: 80px;
+	}
+}
