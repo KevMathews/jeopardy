@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+
+const TIMER_DURATION = 5000; // 5 seconds in milliseconds
 
 export default function QuestionModal({
 	clue,
@@ -10,10 +12,46 @@ export default function QuestionModal({
 	onClose
 }) {
 	const [showAnswer, setShowAnswer] = useState(false);
+	const [timeRemaining, setTimeRemaining] = useState(TIMER_DURATION);
+	const [isTimerActive, setIsTimerActive] = useState(true);
+	const timerRef = useRef(null);
+	const startTimeRef = useRef(Date.now());
+
+	useEffect(() => {
+		// Start timer when modal opens
+		startTimeRef.current = Date.now();
+		setIsTimerActive(true);
+
+		const updateTimer = () => {
+			const elapsed = Date.now() - startTimeRef.current;
+			const remaining = Math.max(0, TIMER_DURATION - elapsed);
+			setTimeRemaining(remaining);
+
+			if (remaining > 0) {
+				timerRef.current = requestAnimationFrame(updateTimer);
+			} else {
+				setIsTimerActive(false);
+			}
+		};
+
+		timerRef.current = requestAnimationFrame(updateTimer);
+
+		return () => {
+			if (timerRef.current) {
+				cancelAnimationFrame(timerRef.current);
+			}
+		};
+	}, []);
 
 	const handleShowAnswer = () => {
 		setShowAnswer(true);
+		setIsTimerActive(false);
+		if (timerRef.current) {
+			cancelAnimationFrame(timerRef.current);
+		}
 	};
+
+	const timerPercentage = (timeRemaining / TIMER_DURATION) * 100;
 
 	return (
 		<div className="modalOverlay" onClick={onClose}>
@@ -31,6 +69,18 @@ export default function QuestionModal({
 					<div className="modalCurrentPlayer">
 						{currentPlayer.name}'s Turn
 					</div>
+
+					{/* Timer Bar */}
+					{isTimerActive && !showAnswer && (
+						<div className="timerContainer">
+							<div className="timerBar">
+								<div
+									className="timerProgress"
+									style={{ width: `${timerPercentage}%` }}
+								/>
+							</div>
+						</div>
+					)}
 
 					<div className="modalQuestion">
 						{clue.question}

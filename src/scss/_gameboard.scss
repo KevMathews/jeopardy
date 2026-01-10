@@ -694,6 +694,120 @@
 	box-shadow: 0 4px 12px rgba(255, 255, 0, 0.4);
 }
 
+// Timer Styles
+.timerContainer {
+	width: 100%;
+	padding: 0;
+	margin: 20px 0;
+}
+
+.timerBar {
+	width: 100%;
+	height: 8px;
+	background: linear-gradient(135deg, rgba(0, 0, 0, 0.15) 0%, rgba(0, 0, 0, 0.25) 100%);
+	border-radius: 10px;
+	overflow: hidden;
+	position: relative;
+	box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.3),
+	            0 2px 8px rgba(0, 0, 0, 0.2);
+
+	&::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: linear-gradient(90deg,
+			transparent 0%,
+			rgba(255, 255, 255, 0.2) 50%,
+			transparent 100%);
+		animation: shimmer 2s linear infinite;
+	}
+}
+
+.timerProgress {
+	height: 100%;
+	background: linear-gradient(135deg,
+		#ff0048 0%,
+		#ff3366 25%,
+		#ff0048 50%,
+		#cc0033 75%,
+		#ff0048 100%);
+	background-size: 200% 100%;
+	border-radius: 10px;
+	transition: width 0.1s linear;
+	position: relative;
+	box-shadow: 0 0 15px rgba(255, 0, 72, 0.8),
+	            0 0 30px rgba(255, 0, 72, 0.5),
+	            inset 0 1px 3px rgba(255, 255, 255, 0.3);
+	animation: timerGlow 1s ease-in-out infinite;
+	transform-origin: center;
+
+	&::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: linear-gradient(90deg,
+			transparent 0%,
+			rgba(255, 255, 255, 0.4) 50%,
+			transparent 100%);
+		animation: timerShine 2s linear infinite;
+	}
+
+	&::after {
+		content: '';
+		position: absolute;
+		top: -2px;
+		left: -2px;
+		right: -2px;
+		bottom: -2px;
+		background: linear-gradient(135deg,
+			rgba(255, 0, 72, 0.6) 0%,
+			rgba(255, 51, 102, 0.6) 100%);
+		border-radius: 12px;
+		z-index: -1;
+		filter: blur(8px);
+		animation: timerPulse 1.5s ease-in-out infinite;
+	}
+}
+
+@keyframes timerGlow {
+	0%, 100% {
+		box-shadow: 0 0 15px rgba(255, 0, 72, 0.8),
+		            0 0 30px rgba(255, 0, 72, 0.5),
+		            inset 0 1px 3px rgba(255, 255, 255, 0.3);
+	}
+	50% {
+		box-shadow: 0 0 25px rgba(255, 0, 72, 1),
+		            0 0 50px rgba(255, 0, 72, 0.8),
+		            inset 0 1px 3px rgba(255, 255, 255, 0.4);
+	}
+}
+
+@keyframes timerShine {
+	0% {
+		transform: translateX(-100%);
+	}
+	100% {
+		transform: translateX(200%);
+	}
+}
+
+@keyframes timerPulse {
+	0%, 100% {
+		opacity: 0.6;
+		transform: scale(1);
+	}
+	50% {
+		opacity: 0.9;
+		transform: scale(1.1);
+	}
+}
+
 .modalQuestion {
 	font-size: 26px;
 	color: $dark-gray;
