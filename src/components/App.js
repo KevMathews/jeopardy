@@ -15,9 +15,15 @@ export default function App(props) {
 	useEffect(() => {
 		(async () => {
 			try {
-				const res = await fetch(`https://jservice.io/api/random`);
-				const data = await res.json();
-				await updateQuestion(data);
+				const categoriesRes = await fetch(`https://rithm-jeopardy.herokuapp.com/api/categories?count=100`);
+				const categories = await categoriesRes.json();
+				const randomCategory = categories[Math.floor(Math.random() * categories.length)];
+
+				const categoryRes = await fetch(`https://rithm-jeopardy.herokuapp.com/api/category?id=${randomCategory.id}`);
+				const categoryData = await categoryRes.json();
+				const randomClue = categoryData.clues[Math.floor(Math.random() * categoryData.clues.length)];
+
+				await updateQuestion([randomClue]);
 			} catch (err) {
 				console.error(err);
 			}
@@ -26,9 +32,15 @@ export default function App(props) {
 
 	async function handleFetch() {
 		try {
-			const response = await fetch('https://jservice.io/api/random');
-			const data = await response.json();
-			updateQuestion(data);
+			const categoriesRes = await fetch('https://rithm-jeopardy.herokuapp.com/api/categories?count=100');
+			const categories = await categoriesRes.json();
+			const randomCategory = categories[Math.floor(Math.random() * categories.length)];
+
+			const categoryRes = await fetch(`https://rithm-jeopardy.herokuapp.com/api/category?id=${randomCategory.id}`);
+			const categoryData = await categoryRes.json();
+			const randomClue = categoryData.clues[Math.floor(Math.random() * categoryData.clues.length)];
+
+			updateQuestion([randomClue]);
 			setIsVisible(false);
 		} catch (error) {
 			console.log(error);
