@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Blue background -->
+  <rect width="64" height="64" fill="#0027aa" rx="8"/>
+
+  <!-- Yellow border -->
+  <rect x="4" y="4" width="56" height="56" fill="none" stroke="#ffff00" stroke-width="3" rx="4"/>
+
+  <!-- Letter J in yellow -->
+  <text x="32" y="48" font-family="Arial, sans-serif" font-size="40" font-weight="bold" fill="#ffff00" text-anchor="middle">J</text>
+</svg>
