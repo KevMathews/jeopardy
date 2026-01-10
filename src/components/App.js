@@ -3,32 +3,58 @@ import Answer from './Answer';
 import Question from './Question';
 import Value from './Value';
 import Category from './Category';
+import GameSetup from './GameSetup';
+import { GAME_PHASES, INITIAL_GAME_STATE } from '../constants/gameConfig';
+import { initializeGame, startRound1 } from '../utils/gameStateManager';
+import { loadGameState, clearGameState } from '../utils/localStorageService';
 
 export default function App(props) {
+	const [gameState, setGameState] = useState(INITIAL_GAME_STATE);
 	const [question, updateQuestion] = useState({});
 	const [isVisible, setIsVisible] = useState(false);
 	const toggleTrueFalse = () => setIsVisible(!isVisible);
-	const [score, changeScore] = useState(0);
-	const increment = () => changeScore(score + question[0].value);
-	const decrement = () => changeScore(score - question[0].value);
 
 	useEffect(() => {
-		(async () => {
-			try {
-				const categoriesRes = await fetch(`https://rithm-jeopardy.herokuapp.com/api/categories?count=100`);
-				const categories = await categoriesRes.json();
-				const randomCategory = categories[Math.floor(Math.random() * categories.length)];
-
-				const categoryRes = await fetch(`https://rithm-jeopardy.herokuapp.com/api/category?id=${randomCategory.id}`);
-				const categoryData = await categoryRes.json();
-				const randomClue = categoryData.clues[Math.floor(Math.random() * categoryData.clues.length)];
-
-				await updateQuestion([randomClue]);
-			} catch (err) {
-				console.error(err);
-			}
-		})();
+		const savedState = loadGameState();
+		if (savedState) {
+			setGameState(savedState);
+		}
 	}, []);
+
+	useEffect(() => {
+		if (gameState.phase === GAME_PHASES.SETUP) {
+			(async () => {
+				try {
+					const categoriesRes = await fetch(`https://rithm-jeopardy.herokuapp.com/api/categories?count=100`);
+					const categories = await categoriesRes.json();
+					const randomCategory = categories[Math.floor(Math.random() * categories.length)];
+
+					const categoryRes = await fetch(`https://rithm-jeopardy.herokuapp.com/api/category?id=${randomCategory.id}`);
+					const categoryData = await categoryRes.json();
+					const randomClue = categoryData.clues[Math.floor(Math.random() * categoryData.clues.length)];
+
+					await updateQuestion([randomClue]);
+				} catch (err) {
+					console.error(err);
+				}
+			})();
+		}
+	}, [gameState.phase]);
+
+	const handleStartGame = async (playerNames) => {
+		try {
+			const initialState = initializeGame(playerNames);
+			const round1State = await startRound1(initialState);
+			setGameState(round1State);
+		} catch (error) {
+			console.error('Error starting game:', error);
+		}
+	};
+
+	const handleNewGame = () => {
+		clearGameState();
+		setGameState(INITIAL_GAME_STATE);
+	};
 
 	async function handleFetch() {
 		try {
@@ -45,6 +71,10 @@ export default function App(props) {
 		} catch (error) {
 			console.log(error);
 		}
+	}
+
+	if (gameState.phase === GAME_PHASES.SETUP) {
+		return <GameSetup onStartGame={handleStartGame} />;
 	}
 
 	return (
