@@ -13,7 +13,7 @@ import GameComplete from './GameComplete';
 import { GAME_PHASES, INITIAL_GAME_STATE } from '../constants/gameConfig';
 import { initializeGame, startRound1, startRound2, startFinalJeopardy, isRoundComplete, completeGame } from '../utils/gameStateManager';
 import { loadGameState, clearGameState } from '../utils/localStorageService';
-import { submitAnswer, selectCell } from '../utils/gameStateManager';
+import { submitAnswer, selectCell, registerBuzzIn, submitBuzzAnswer, closeQuestion } from '../utils/gameStateManager';
 
 export default function App(props) {
 	const [gameState, setGameState] = useState(INITIAL_GAME_STATE);
@@ -78,8 +78,24 @@ export default function App(props) {
 
 	const handleCellClick = (cellData) => {
 		setSelectedCellData(cellData);
-		const updatedState = selectCell(gameState, cellData.cellId);
-		setGameState(updatedState);
+
+		// Initialize active question for buzz-in system
+		const updatedState = {
+			...gameState,
+			activeQuestion: {
+				cellId: cellData.cellId,
+				originalSelector: gameState.currentPlayerIndex,
+				buzzedPlayers: [],
+				attemptedAnswers: {},
+				currentBuzzer: null,
+				timerStartTime: Date.now(),
+				isLocked: false,
+				remainingPlayers: gameState.players.map(p => p.id)
+			}
+		};
+
+		const cellSelectedState = selectCell(updatedState, cellData.cellId);
+		setGameState(cellSelectedState);
 
 		// If it's a Daily Double, show the wager modal first
 		if (cellData.isDailyDouble) {
@@ -93,42 +109,94 @@ export default function App(props) {
 		// Question modal will now show automatically since selectedCellData is set
 	};
 
-	const handleCorrectAnswer = () => {
+	const handleBuzzIn = (playerId) => {
+		// Pause timer, lock question, mark player as buzzer
+		const updatedState = registerBuzzIn(gameState, playerId);
+		setGameState(updatedState);
+		// Modal will update to show "Show Answer" button for this player
+	};
+
+	const handleCorrectAnswer = (playerId) => {
 		if (!selectedCellData) return;
 
-		// Use wager for Daily Doubles, otherwise use cell value
-		const pointValue = dailyDoubleWager !== null ? dailyDoubleWager : selectedCellData.value;
+		// For Daily Doubles, use old system
+		if (dailyDoubleWager !== null) {
+			const updatedState = submitAnswer(
+				gameState,
+				true,
+				selectedCellData.value,
+				dailyDoubleWager
+			);
+			setGameState(updatedState);
+			setSelectedCellData(null);
+			setDailyDoubleWager(null);
+			return;
+		}
 
-		const updatedState = submitAnswer(
+		// Award points to buzzer, give them board control, close modal
+		const updatedState = submitBuzzAnswer(
 			gameState,
-			true,
+			playerId,
+			true, // isCorrect
 			selectedCellData.value,
-			dailyDoubleWager
+			null // no wager for regular questions
 		);
 		setGameState(updatedState);
 		setSelectedCellData(null);
-		setDailyDoubleWager(null);
 	};
 
-	const handleIncorrectAnswer = () => {
+	const handleIncorrectAnswer = (playerId) => {
 		if (!selectedCellData) return;
 
-		const updatedState = submitAnswer(
+		// For Daily Doubles, use old system
+		if (dailyDoubleWager !== null) {
+			const updatedState = submitAnswer(
+				gameState,
+				false,
+				selectedCellData.value,
+				dailyDoubleWager
+			);
+			setGameState(updatedState);
+
+			// Delay closing modal by 2 seconds on incorrect answer
+			setTimeout(() => {
+				setSelectedCellData(null);
+				setDailyDoubleWager(null);
+			}, 2000);
+			return;
+		}
+
+		// Deduct points from buzzer, remove from remaining players
+		const updatedState = submitBuzzAnswer(
 			gameState,
-			false,
+			playerId,
+			false, // isCorrect
 			selectedCellData.value,
-			dailyDoubleWager
+			null // no wager
 		);
+
 		setGameState(updatedState);
 
-		// Delay closing modal by 2 seconds on incorrect answer
-		setTimeout(() => {
-			setSelectedCellData(null);
-			setDailyDoubleWager(null);
-		}, 2000);
+		// Check if any players remaining
+		if (updatedState.activeQuestion && updatedState.activeQuestion.remainingPlayers.length === 0) {
+			// All players wrong - show message, close after 3s
+			setTimeout(() => {
+				const finalState = closeQuestion(updatedState);
+				setGameState(finalState);
+				setSelectedCellData(null);
+			}, 3000);
+		} else {
+			// Other players can still buzz - keep modal open, reset to BUZZER_ACTIVE
+			// Modal will automatically reopen buzzer based on activeQuestion state
+		}
 	};
 
 	const handleCloseModal = () => {
+		// Close question if active
+		if (gameState.activeQuestion) {
+			const finalState = closeQuestion(gameState);
+			setGameState(finalState);
+		}
 		setSelectedCellData(null);
 		setShowDailyDoubleModal(false);
 		setDailyDoubleWager(null);
@@ -230,6 +298,7 @@ export default function App(props) {
 					<DailyDoubleModal
 						category={gameState.categories[selectedCellData.categoryIndex].title}
 						currentPlayer={gameState.players[gameState.currentPlayerIndex]}
+						currentRound={gameState.currentRound}
 						onWagerSubmit={handleWagerSubmit}
 						onClose={handleCloseModal}
 					/>
@@ -240,10 +309,13 @@ export default function App(props) {
 						clue={selectedCellData.clue}
 						value={dailyDoubleWager !== null ? dailyDoubleWager : selectedCellData.value}
 						category={gameState.categories[selectedCellData.categoryIndex].title}
-						currentPlayer={gameState.players[gameState.currentPlayerIndex]}
+						players={gameState.players}
+						activeQuestion={gameState.activeQuestion}
+						onBuzzIn={handleBuzzIn}
 						onCorrect={handleCorrectAnswer}
 						onIncorrect={handleIncorrectAnswer}
 						onClose={handleCloseModal}
+						isDailyDouble={dailyDoubleWager !== null}
 					/>
 				)}
 			</>

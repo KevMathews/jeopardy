@@ -3,15 +3,24 @@ import React, { useState } from 'react';
 export default function DailyDoubleModal({
 	category,
 	currentPlayer,
+	currentRound,
 	onWagerSubmit,
 	onClose
 }) {
 	const [wager, setWager] = useState('');
 	const [error, setError] = useState('');
 
-	// Calculate min and max wager
+	// Calculate min and max wager based on Jeopardy rules
 	const minWager = 5;
-	const maxWager = Math.max(currentPlayer.score, minWager);
+
+	// Maximum clue value on the board
+	const boardMaxValue = currentRound === 1 ? 1000 : 2000;
+
+	// If player has positive score: can wager up to their score OR board max, whichever is greater
+	// If player has zero or negative score: can wager up to board max
+	const maxWager = currentPlayer.score > 0
+		? Math.max(currentPlayer.score, boardMaxValue)
+		: boardMaxValue;
 
 	const handleWagerChange = (e) => {
 		const value = e.target.value;

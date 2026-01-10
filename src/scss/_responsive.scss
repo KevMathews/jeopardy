@@ -489,6 +489,7 @@
 	.gameBoardContainer {
 		justify-content: center;
 		min-height: 100vh;
+		padding: 15px;
 	}
 }
 
@@ -498,6 +499,58 @@
 	}
 
 	.categoryHeader {
-		min-height: 80px;
+		min-height: 60px;
+		padding: 12px 10px;
+	}
+
+	.gameBoardHeader {
+		margin-bottom: 15px;
+
+		.jeopardyLogoSmall {
+			max-width: 380px;
+		}
+	}
+
+	.playerScoreboard {
+		padding: 15px;
+		margin-bottom: 20px;
+	}
+
+	.gameBoard {
+		padding: 20px;
+	}
+}
+
+// Buzz-In System Mobile Responsive Styles
+@media (max-width: $breakpoint-mobile) {
+	.buzzInButtons {
+		flex-direction: column;
+
+		.buzzInButton {
+			padding: 14px 20px;
+			font-size: 18px;
+		}
+	}
+
+	.playerBuzzStatus {
+		flex-direction: column;
+		gap: 8px;
+
+		.playerStatusCard {
+			padding: 10px;
+
+			.playerStatusName {
+				font-size: 14px;
+			}
+
+			.playerStatusIndicator {
+				font-size: 12px;
+			}
+		}
+	}
+
+	.allWrongMessage {
+		font-size: 22px;
+		padding: 20px;
 	}
 }

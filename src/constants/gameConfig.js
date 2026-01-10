@@ -55,7 +55,8 @@ export const INITIAL_GAME_STATE = {
 	dailyDoubleLocations: [],
 	usedCategoryIds: new Set(),
 	selectedCell: null,
-	modalType: null
+	modalType: null,
+	activeQuestion: null
 };
 
 export function getInitialPlayer(id, name) {

@@ -207,6 +207,117 @@ export function submitAnswer(currentState, isCorrect, value, wager = null) {
 }
 
 /**
+ * Register a player buzz-in
+ * @param {Object} currentState - Current game state
+ * @param {number} playerId - ID of player who buzzed
+ * @returns {Object} Updated game state with buzz recorded
+ */
+export function registerBuzzIn(currentState, playerId) {
+	const activeQuestion = {
+		...currentState.activeQuestion,
+		currentBuzzer: playerId,
+		buzzedPlayers: [...currentState.activeQuestion.buzzedPlayers, playerId],
+		isLocked: true,
+		timerPausedAt: Date.now()
+	};
+
+	const newState = {
+		...currentState,
+		activeQuestion,
+		currentPlayerIndex: currentState.players.findIndex(p => p.id === playerId)
+	};
+
+	saveGameState(newState);
+	return newState;
+}
+
+/**
+ * Submit answer from a specific player in buzz-in mode
+ * @param {Object} currentState - Current game state
+ * @param {number} playerId - ID of player answering
+ * @param {boolean} isCorrect - Whether answer was correct
+ * @param {number} value - Question value
+ * @param {number} wager - Wager amount (for Daily Doubles)
+ * @returns {Object} Updated game state
+ */
+export function submitBuzzAnswer(currentState, playerId, isCorrect, value, wager = null) {
+	const players = [...currentState.players];
+	const playerIndex = players.findIndex(p => p.id === playerId);
+	const player = players[playerIndex];
+
+	const pointChange = wager !== null ? wager : value;
+	player.score += isCorrect ? pointChange : -pointChange;
+
+	const attemptedAnswers = {
+		...currentState.activeQuestion.attemptedAnswers,
+		[playerId]: {
+			correct: isCorrect,
+			timestamp: Date.now(),
+			pointChange: isCorrect ? pointChange : -pointChange
+		}
+	};
+
+	// If correct, close question
+	if (isCorrect) {
+		const answeredCells = new Set(currentState.answeredCells);
+		answeredCells.add(currentState.activeQuestion.cellId);
+
+		const newState = {
+			...currentState,
+			players,
+			answeredCells,
+			currentPlayerIndex: playerIndex,
+			activeQuestion: null,
+			selectedCell: null
+		};
+
+		saveGameState(newState);
+		return newState;
+	}
+
+	// If incorrect, remove from remaining players, reopen buzzer
+	const remainingPlayers = currentState.activeQuestion.remainingPlayers
+		.filter(id => id !== playerId);
+
+	const newState = {
+		...currentState,
+		players,
+		activeQuestion: {
+			...currentState.activeQuestion,
+			attemptedAnswers,
+			remainingPlayers,
+			currentBuzzer: null,
+			isLocked: false,
+			timerStartTime: Date.now()
+		}
+	};
+
+	saveGameState(newState);
+	return newState;
+}
+
+/**
+ * Close active question (all wrong or timeout)
+ * @param {Object} currentState - Current game state
+ * @returns {Object} Updated game state with question closed
+ */
+export function closeQuestion(currentState) {
+	const answeredCells = new Set(currentState.answeredCells);
+	answeredCells.add(currentState.activeQuestion.cellId);
+
+	const newState = {
+		...currentState,
+		answeredCells,
+		activeQuestion: null,
+		selectedCell: null,
+		currentPlayerIndex: currentState.activeQuestion.originalSelector
+	};
+
+	saveGameState(newState);
+	return newState;
+}
+
+/**
  * Check if round is complete
  * @param {Object} currentState - Current game state
  * @returns {boolean} True if all cells answered
