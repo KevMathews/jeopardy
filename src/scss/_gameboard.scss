@@ -6,80 +6,146 @@
 	background: url('https://i.imgur.com/7BwlRhZ.png');
 	background-color: blue;
 	background-size: cover;
+	background-attachment: fixed;
+	background-position: center;
 	padding: 20px;
 	box-sizing: border-box;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
 
 .gameBoardHeader {
 	text-align: center;
-	margin-bottom: 20px;
+	margin-bottom: 25px;
+	animation: fadeInDown 0.8s ease-out;
 
 	.jeopardyLogoSmall {
-		max-width: 400px;
+		max-width: 450px;
 		width: 100%;
 		height: auto;
+		filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.6));
+		transition: transform 0.3s ease;
+
+		&:hover {
+			transform: scale(1.02);
+		}
 	}
 }
 
 .playerScoreboard {
-	background-color: $white;
-	border: $border-thickness solid $yellow-accent;
-	border-radius: $border-radius;
-	padding: 15px;
+	background: linear-gradient(135deg, #ffffff 0%, #f5f5f5 100%);
+	border: 4px solid $yellow-accent;
+	border-radius: 12px;
+	padding: 20px;
 	margin: 0 auto 30px;
 	max-width: 1200px;
+	width: 100%;
+	box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4),
+	            0 0 0 2px $primary-blue,
+	            inset 0 2px 4px rgba(255, 255, 255, 0.8);
+	animation: fadeIn 0.6s ease-out;
 
 	.scoreboardTitle {
-		font-size: $font-size-large;
+		font-size: 28px;
 		font-weight: bold;
 		color: $primary-blue;
-		margin-bottom: 15px;
+		margin-bottom: 18px;
 		text-align: center;
+		text-transform: uppercase;
+		letter-spacing: 2px;
+		text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
 	}
 
 	.playerList {
 		display: flex;
 		justify-content: space-around;
 		flex-wrap: wrap;
-		gap: 15px;
+		gap: 18px;
 	}
 
 	.playerCard {
-		background-color: $background-gray;
-		border: 2px solid $light-gray;
-		border-radius: $border-radius;
-		padding: 12px 20px;
-		min-width: 150px;
-		transition: all $transition-speed;
+		background: linear-gradient(135deg, #e8e8e8 0%, #d0d0d0 100%);
+		border: 3px solid $light-gray;
+		border-radius: 10px;
+		padding: 16px 24px;
+		min-width: 180px;
+		transition: all 0.3s ease;
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+		position: relative;
+		overflow: hidden;
+
+		&::before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			height: 4px;
+			background: linear-gradient(90deg, transparent, $light-gray, transparent);
+			opacity: 0;
+			transition: opacity 0.3s ease;
+		}
+
+		&:hover {
+			transform: translateY(-2px);
+			box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+
+			&::before {
+				opacity: 1;
+			}
+		}
 
 		&.active {
 			border-color: $yellow-accent;
-			background-color: $yellow-accent;
-			box-shadow: 0 0 15px rgba(255, 255, 0, 0.5);
+			background: linear-gradient(135deg, $yellow-accent 0%, #ffd700 100%);
+			box-shadow: 0 0 30px rgba(255, 255, 0, 0.6),
+			            0 6px 20px rgba(0, 0, 0, 0.3);
+			animation: pulse 2s ease-in-out infinite;
+
+			&::before {
+				background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+				opacity: 1;
+			}
+
+			.playerName {
+				color: $primary-blue;
+				text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+			}
 		}
 
 		.playerName {
-			font-size: $font-size-medium;
+			font-size: 20px;
 			font-weight: bold;
 			color: $primary-blue;
-			margin-bottom: 5px;
+			margin-bottom: 8px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 8px;
 
 			.turnIndicator {
 				color: $incorrect-red;
-				font-size: $font-size-large;
+				font-size: 24px;
+				animation: bounceLeft 1s ease-in-out infinite;
+				text-shadow: 0 0 8px rgba(255, 0, 72, 0.5);
 			}
 		}
 
 		.playerScore {
-			font-size: $font-size-large;
+			font-size: 32px;
 			font-weight: bold;
+			text-align: center;
+			text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
 
 			&.positive {
 				color: $correct-green;
+				text-shadow: 0 0 10px rgba(31, 204, 0, 0.3);
 			}
 
 			&.negative {
 				color: $incorrect-red;
+				text-shadow: 0 0 10px rgba(255, 0, 72, 0.3);
 			}
 
 			&.zero {
@@ -91,80 +157,145 @@
 
 .gameBoard {
 	max-width: 1200px;
+	width: 100%;
 	margin: 0 auto;
-	background-color: $primary-blue;
-	padding: 20px;
-	border-radius: $border-radius;
+	background: linear-gradient(135deg, $primary-blue 0%, darken($primary-blue, 15%) 100%);
+	padding: 25px;
+	border-radius: 16px;
+	box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6),
+	            0 0 0 4px $yellow-accent,
+	            inset 0 2px 4px rgba(0, 0, 0, 0.3);
+	animation: fadeIn 0.8s ease-out;
 }
 
 .categoryHeaders {
 	display: grid;
 	grid-template-columns: repeat(6, 1fr);
-	gap: $cell-spacing;
-	margin-bottom: $cell-spacing;
+	gap: 10px;
+	margin-bottom: 10px;
 }
 
 .categoryHeader {
-	background-color: $primary-blue;
-	border: $border-thickness solid $yellow-accent;
-	border-radius: $border-radius;
-	padding: 15px 10px;
+	background: linear-gradient(180deg, $primary-blue 0%, darken($primary-blue, 10%) 100%);
+	border: 3px solid $yellow-accent;
+	border-radius: 8px;
+	padding: 18px 12px;
 	text-align: center;
-	min-height: 80px;
+	min-height: 90px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4),
+	            inset 0 -2px 8px rgba(0, 0, 0, 0.2),
+	            inset 0 2px 8px rgba(255, 255, 255, 0.1);
+	position: relative;
+	overflow: hidden;
+
+	&::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: -100%;
+		width: 100%;
+		height: 100%;
+		background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+		animation: shimmer 3s infinite;
+	}
 
 	.categoryHeaderTitle {
 		color: $white;
-		font-size: $font-size-medium;
+		font-size: 17px;
 		font-weight: bold;
 		text-transform: uppercase;
 		word-wrap: break-word;
+		text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
+		letter-spacing: 1px;
+		line-height: 1.3;
+		position: relative;
+		z-index: 1;
 	}
 }
 
 .boardGrid {
 	display: flex;
 	flex-direction: column;
-	gap: $cell-spacing;
+	gap: 10px;
 }
 
 .boardRow {
 	display: grid;
 	grid-template-columns: repeat(6, 1fr);
-	gap: $cell-spacing;
+	gap: 10px;
 }
 
 .boardCell {
-	background-color: $primary-blue;
-	border: $border-thickness solid $yellow-accent;
-	border-radius: $border-radius;
-	min-height: $desktop-cell-height;
+	background: linear-gradient(135deg, $primary-blue 0%, darken($primary-blue, 8%) 100%);
+	border: 3px solid $yellow-accent;
+	border-radius: 8px;
+	min-height: 85px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	cursor: pointer;
-	transition: all $transition-speed;
-	font-size: $font-size-large;
+	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	font-size: 28px;
 	font-weight: bold;
 	color: $yellow-accent;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4),
+	            inset 0 -3px 10px rgba(0, 0, 0, 0.3),
+	            inset 0 3px 10px rgba(255, 255, 255, 0.1);
+	position: relative;
+	overflow: hidden;
+
+	&::before {
+		content: '';
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		width: 0;
+		height: 0;
+		border-radius: 50%;
+		background: radial-gradient(circle, rgba(255, 255, 255, 0.3), transparent);
+		transform: translate(-50%, -50%);
+		transition: width 0.6s ease, height 0.6s ease;
+	}
 
 	&:hover:not(:disabled) {
-		background-color: darken($primary-blue, 5%);
-		transform: scale(1.05);
-		box-shadow: 0 0 20px rgba(255, 255, 0, 0.6);
+		background: linear-gradient(135deg, lighten($primary-blue, 5%) 0%, $primary-blue 100%);
+		transform: scale(1.08) translateY(-3px);
+		box-shadow: 0 0 30px rgba(255, 255, 0, 0.8),
+		            0 8px 24px rgba(0, 0, 0, 0.5),
+		            inset 0 -3px 10px rgba(0, 0, 0, 0.2);
+		border-color: lighten($yellow-accent, 10%);
+
+		&::before {
+			width: 200%;
+			height: 200%;
+		}
+
+		.cellValue {
+			transform: scale(1.15);
+			text-shadow: 0 0 20px rgba(255, 255, 0, 0.9),
+			             0 0 40px rgba(255, 255, 0, 0.6);
+		}
 	}
 
 	&:active:not(:disabled) {
-		transform: scale(0.98);
+		transform: scale(1.02);
+		transition: transform 0.1s ease;
 	}
 
 	&.answered {
-		background-color: darken($primary-blue, 10%);
-		border-color: $dark-gray;
+		background: linear-gradient(135deg, darken($primary-blue, 20%) 0%, darken($primary-blue, 25%) 100%);
+		border-color: darken($dark-gray, 10%);
 		cursor: not-allowed;
-		opacity: 0.4;
+		opacity: 0.3;
+		box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.8);
+
+		&:hover {
+			transform: none;
+			box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.8);
+		}
 	}
 
 	&:disabled {
@@ -172,8 +303,16 @@
 	}
 
 	.cellValue {
-		font-size: $font-size-large;
+		font-size: 28px;
 		color: $yellow-accent;
+		text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.9),
+		             0 0 10px rgba(255, 255, 0, 0.3);
+		font-family: 'Lato', sans-serif;
+		font-weight: 900;
+		letter-spacing: 1px;
+		transition: all 0.3s ease;
+		position: relative;
+		z-index: 1;
 	}
 }
 
@@ -183,6 +322,8 @@
 	background: url('https://i.imgur.com/7BwlRhZ.png');
 	background-color: blue;
 	background-size: cover;
+	background-attachment: fixed;
+	background-position: center;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -191,56 +332,105 @@
 }
 
 .gameSetupCard {
-	background-color: $white;
-	border: 5px solid $yellow-accent;
-	border-radius: $border-radius * 2;
-	padding: 40px;
-	max-width: 600px;
+	background: linear-gradient(135deg, #ffffff 0%, #f8f8f8 100%);
+	border: 6px solid $yellow-accent;
+	border-radius: 20px;
+	padding: 45px;
+	max-width: 650px;
 	width: 100%;
-	box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+	box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5),
+	            0 0 0 3px $primary-blue,
+	            inset 0 2px 4px rgba(255, 255, 255, 0.9);
+	animation: fadeInScale 0.6s ease-out;
+	position: relative;
+	overflow: hidden;
+
+	&::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: -100%;
+		width: 50%;
+		height: 100%;
+		background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+		animation: shimmer 4s infinite;
+	}
 
 	.setupTitle {
 		color: $primary-blue;
-		font-size: 48px;
+		font-size: 52px;
 		text-align: center;
-		margin-bottom: 40px;
+		margin-bottom: 45px;
 		font-weight: bold;
+		text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.15);
+		letter-spacing: 2px;
+		animation: fadeInDown 0.8s ease-out;
+		position: relative;
+		z-index: 1;
 	}
 
 	.setupSection {
-		margin-bottom: 30px;
+		margin-bottom: 35px;
+		position: relative;
+		z-index: 1;
 
 		.sectionTitle {
 			color: $primary-blue;
-			font-size: $font-size-large;
-			margin-bottom: 15px;
+			font-size: 26px;
+			margin-bottom: 18px;
 			font-weight: bold;
+			text-transform: uppercase;
+			letter-spacing: 1px;
 		}
 
 		.playerCountButtons {
 			display: flex;
-			gap: 15px;
+			gap: 18px;
 			justify-content: center;
 
 			.playerCountButton {
-				background-color: $background-gray;
+				background: linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%);
 				border: 3px solid $light-gray;
-				border-radius: $border-radius;
-				padding: 15px 30px;
-				font-size: $font-size-medium;
+				border-radius: 12px;
+				padding: 18px 35px;
+				font-size: 20px;
 				font-weight: bold;
 				cursor: pointer;
-				transition: all $transition-speed;
+				transition: all 0.3s ease;
+				box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+				position: relative;
+				overflow: hidden;
 
-				&:hover {
-					background-color: $yellow-accent;
+				&::before {
+					content: '';
+					position: absolute;
+					top: 50%;
+					left: 50%;
+					width: 0;
+					height: 0;
+					border-radius: 50%;
+					background: rgba(255, 255, 255, 0.5);
+					transform: translate(-50%, -50%);
+					transition: width 0.4s ease, height 0.4s ease;
+				}
+
+				&:hover:not(.active) {
+					background: linear-gradient(135deg, $yellow-accent 0%, #ffd700 100%);
 					border-color: $yellow-accent;
+					transform: translateY(-2px);
+					box-shadow: 0 6px 20px rgba(255, 255, 0, 0.4);
+
+					&::before {
+						width: 300%;
+						height: 300%;
+					}
 				}
 
 				&.active {
-					background-color: $primary-blue;
+					background: linear-gradient(135deg, $primary-blue 0%, darken($primary-blue, 10%) 100%);
 					border-color: $primary-blue;
 					color: $white;
+					box-shadow: 0 0 25px rgba(0, 39, 170, 0.6);
 				}
 			}
 		}
@@ -248,31 +438,34 @@
 		.playerInputs {
 			display: flex;
 			flex-direction: column;
-			gap: 15px;
+			gap: 18px;
 
 			.playerInputGroup {
 				display: flex;
 				align-items: center;
-				gap: 10px;
+				gap: 12px;
 
 				.playerLabel {
-					font-size: $font-size-medium;
+					font-size: 19px;
 					font-weight: bold;
 					color: $primary-blue;
-					min-width: 80px;
+					min-width: 90px;
 				}
 
 				.playerInput {
 					flex: 1;
-					padding: 12px;
-					border: 2px solid $light-gray;
-					border-radius: $border-radius;
-					font-size: $font-size-medium;
-					transition: border-color $transition-speed;
+					padding: 14px;
+					border: 3px solid $light-gray;
+					border-radius: 10px;
+					font-size: 18px;
+					transition: all 0.3s ease;
+					box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
 
 					&:focus {
 						outline: none;
 						border-color: $primary-blue;
+						box-shadow: 0 0 15px rgba(0, 39, 170, 0.3),
+						            inset 0 2px 4px rgba(0, 0, 0, 0.05);
 					}
 				}
 			}
@@ -280,33 +473,119 @@
 
 		.startGameButton {
 			width: 100%;
-			background-color: $correct-green;
+			background: linear-gradient(135deg, $correct-green 0%, darken($correct-green, 8%) 100%);
 			border: none;
-			border-radius: $border-radius;
-			padding: 20px;
-			font-size: $font-size-large;
+			border-radius: 14px;
+			padding: 22px;
+			font-size: 26px;
 			font-weight: bold;
 			color: $white;
 			cursor: pointer;
-			transition: all $transition-speed;
+			transition: all 0.3s ease;
+			box-shadow: 0 6px 20px rgba(31, 204, 0, 0.3);
+			text-transform: uppercase;
+			letter-spacing: 2px;
+			position: relative;
+			overflow: hidden;
+
+			&::before {
+				content: '';
+				position: absolute;
+				top: 0;
+				left: -100%;
+				width: 100%;
+				height: 100%;
+				background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+				transition: left 0.5s ease;
+			}
 
 			&:hover:not(:disabled) {
-				background-color: darken($correct-green, 10%);
-				transform: translateY(-2px);
-				box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+				background: linear-gradient(135deg, lighten($correct-green, 5%) 0%, $correct-green 100%);
+				transform: translateY(-3px);
+				box-shadow: 0 10px 30px rgba(31, 204, 0, 0.5);
+
+				&::before {
+					left: 100%;
+				}
+			}
+
+			&:active:not(:disabled) {
+				transform: translateY(-1px);
 			}
 
 			&:disabled {
-				background-color: $light-gray;
+				background: linear-gradient(135deg, $light-gray 0%, darken($light-gray, 5%) 100%);
 				cursor: not-allowed;
+				box-shadow: none;
 			}
 		}
 
 		.setupHint {
 			text-align: center;
-			color: $dark-gray;
-			font-size: $font-size-small;
-			margin-top: 10px;
+			color: lighten($dark-gray, 20%);
+			font-size: 15px;
+			margin-top: 12px;
+			font-style: italic;
 		}
+	}
+}
+
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes fadeInDown {
+	from {
+		opacity: 0;
+		transform: translateY(-30px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes fadeInScale {
+	from {
+		opacity: 0;
+		transform: scale(0.9);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1);
+	}
+}
+
+@keyframes pulse {
+	0%, 100% {
+		box-shadow: 0 0 30px rgba(255, 255, 0, 0.6),
+		            0 6px 20px rgba(0, 0, 0, 0.3);
+	}
+	50% {
+		box-shadow: 0 0 45px rgba(255, 255, 0, 0.9),
+		            0 6px 20px rgba(0, 0, 0, 0.3);
+	}
+}
+
+@keyframes bounceLeft {
+	0%, 100% {
+		transform: translateX(0);
+	}
+	50% {
+		transform: translateX(-8px);
+	}
+}
+
+@keyframes shimmer {
+	0% {
+		left: -100%;
+	}
+	100% {
+		left: 100%;
 	}
 }

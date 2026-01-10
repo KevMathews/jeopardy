@@ -2,212 +2,258 @@
 
 @media (max-width: $breakpoint-tablet) {
 	.gameBoardHeader {
+		margin-bottom: 20px;
+
 		.jeopardyLogoSmall {
-			max-width: 300px;
+			max-width: 320px;
 		}
 	}
 
 	.playerScoreboard {
-		padding: 10px;
+		padding: 15px;
 
 		.scoreboardTitle {
-			font-size: $font-size-medium;
+			font-size: 22px;
 		}
 
 		.playerList {
-			gap: 10px;
+			gap: 12px;
 		}
 
 		.playerCard {
-			min-width: 120px;
-			padding: 10px 15px;
+			min-width: 140px;
+			padding: 12px 18px;
 
 			.playerName {
-				font-size: $font-size-small;
+				font-size: 16px;
+
+				.turnIndicator {
+					font-size: 20px;
+				}
 			}
 
 			.playerScore {
-				font-size: $font-size-medium;
+				font-size: 26px;
 			}
 		}
 	}
 
 	.gameBoard {
-		padding: 15px;
+		padding: 18px;
 	}
 
 	.categoryHeader {
-		min-height: 70px;
-		padding: 10px 5px;
+		min-height: 75px;
+		padding: 12px 8px;
 
 		.categoryHeaderTitle {
-			font-size: $font-size-small;
+			font-size: 15px;
 		}
 	}
 
 	.boardCell {
-		min-height: $tablet-cell-height;
-		font-size: $font-size-medium;
+		min-height: 70px;
+		font-size: 22px;
 
 		.cellValue {
-			font-size: $font-size-medium;
+			font-size: 22px;
 		}
 	}
 
 	.gameSetupCard {
-		padding: 30px;
+		padding: 35px;
 
 		.setupTitle {
-			font-size: 36px;
+			font-size: 40px;
+			margin-bottom: 35px;
+		}
+
+		.setupSection {
+			.sectionTitle {
+				font-size: 22px;
+			}
+
+			.playerCountButton {
+				padding: 14px 28px;
+				font-size: 18px;
+			}
+
+			.playerLabel {
+				font-size: 17px;
+			}
+
+			.playerInput {
+				padding: 12px;
+				font-size: 16px;
+			}
+
+			.startGameButton {
+				padding: 18px;
+				font-size: 22px;
+			}
 		}
 	}
 }
 
 @media (max-width: $breakpoint-mobile) {
 	.gameBoardContainer {
-		padding: 10px;
+		padding: 12px;
+		justify-content: flex-start;
 	}
 
 	.gameBoardHeader {
 		margin-bottom: 15px;
 
 		.jeopardyLogoSmall {
-			max-width: 250px;
+			max-width: 280px;
 		}
 	}
 
 	.playerScoreboard {
-		padding: 10px;
-		margin-bottom: 20px;
+		padding: 12px;
+		margin-bottom: 18px;
 
 		.scoreboardTitle {
-			font-size: $font-size-small;
-			margin-bottom: 10px;
+			font-size: 18px;
+			margin-bottom: 12px;
+			letter-spacing: 1px;
 		}
 
 		.playerList {
 			flex-direction: column;
-			gap: 8px;
+			gap: 10px;
 		}
 
 		.playerCard {
 			min-width: 100%;
-			padding: 8px 12px;
+			padding: 10px 16px;
 
 			.playerName {
-				font-size: $font-size-small;
+				font-size: 16px;
 
 				.turnIndicator {
-					font-size: $font-size-medium;
+					font-size: 20px;
 				}
 			}
 
 			.playerScore {
-				font-size: $font-size-medium;
+				font-size: 24px;
 			}
 		}
 	}
 
 	.gameBoard {
-		padding: 10px;
+		padding: 12px;
 	}
 
 	.categoryHeaders {
 		grid-template-columns: repeat(3, 1fr);
-		gap: 6px;
+		gap: 8px;
 	}
 
 	.categoryHeader {
-		min-height: 60px;
-		padding: 8px 4px;
+		min-height: 65px;
+		padding: 10px 6px;
 
 		.categoryHeaderTitle {
-			font-size: 12px;
+			font-size: 13px;
+			letter-spacing: 0.5px;
 		}
 	}
 
 	.boardGrid {
-		gap: 6px;
+		gap: 8px;
 	}
 
 	.boardRow {
 		grid-template-columns: repeat(3, 1fr);
-		gap: 6px;
+		gap: 8px;
 	}
 
 	.boardCell {
-		min-height: $mobile-cell-height;
-		font-size: $font-size-small;
+		min-height: 65px;
+		font-size: 18px;
 
 		&:hover:not(:disabled) {
-			transform: scale(1.03);
+			transform: scale(1.05) translateY(-2px);
 		}
 
 		.cellValue {
-			font-size: $font-size-small;
+			font-size: 18px;
 		}
 	}
 
 	.gameSetupContainer {
 		padding: 15px;
+		justify-content: center;
 	}
 
 	.gameSetupCard {
-		padding: 20px;
-		border-width: 3px;
+		padding: 25px;
+		border-width: 4px;
 
 		.setupTitle {
-			font-size: 28px;
+			font-size: 32px;
 			margin-bottom: 30px;
+			letter-spacing: 1px;
 		}
 
 		.setupSection {
-			margin-bottom: 20px;
+			margin-bottom: 25px;
 
 			.sectionTitle {
-				font-size: $font-size-medium;
-				margin-bottom: 10px;
+				font-size: 20px;
+				margin-bottom: 12px;
 			}
 
 			.playerCountButtons {
 				flex-direction: column;
-				gap: 10px;
+				gap: 12px;
 
 				.playerCountButton {
 					width: 100%;
-					padding: 12px;
-					font-size: $font-size-small;
+					padding: 14px;
+					font-size: 16px;
 				}
 			}
 
 			.playerInputs {
-				gap: 10px;
+				gap: 12px;
 
 				.playerInputGroup {
 					flex-direction: column;
 					align-items: flex-start;
+					gap: 8px;
 
 					.playerLabel {
-						font-size: $font-size-small;
+						font-size: 16px;
 					}
 
 					.playerInput {
 						width: 100%;
-						padding: 10px;
-						font-size: $font-size-small;
+						padding: 12px;
+						font-size: 16px;
 					}
 				}
 			}
 
 			.startGameButton {
-				padding: 15px;
-				font-size: $font-size-medium;
+				padding: 16px;
+				font-size: 20px;
+				letter-spacing: 1px;
 			}
 
 			.setupHint {
-				font-size: 12px;
+				font-size: 13px;
 			}
 		}
+	}
+}
+
+@media (min-width: $breakpoint-tablet + 1) {
+	.gameBoardContainer {
+		justify-content: flex-start;
+		padding-top: 30px;
 	}
 }
 
