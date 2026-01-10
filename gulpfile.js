@@ -6,7 +6,7 @@
 const gulp = require('gulp');
 
 // Explanation for Students ---- This is for compiling SASS, we haven't learned SASS yet but this is as good a chance as any to to talk about how we could compile it.
-const sass = require('gulp-sass');
+const sass = require('gulp-sass')(require('sass'));
 
 // Use Nodemon programatically
 const nodemon = require('gulp-nodemon');
@@ -47,7 +47,7 @@ gulp.task('default', (cb) => {
  // SERVE  FRONT END WITH PROXY TO BACKEND
 	browserSync.init({
 	 proxy: {
-		 target: 'http://localhost:8000',
+		 target: 'http://localhost:5000',
 		 ws: true
 	 },
 	 serveStatic: ['./public']
@@ -78,11 +78,10 @@ gulp.task('styles', (cb) => {
 				outputStyle: 'compressed'
 			}).on('error', sass.logError)
 		)
-		.pipe(
-			autoprefixer({
-				cascade: false
-			})
-		)
+		.pipe(autoprefixer({
+			overrideBrowserslist: ['last 2 versions'],
+			cascade: false
+		}))
 		.pipe(gulp.dest('./public/css'))
 		.pipe(browserSync.stream());
 		cb()
