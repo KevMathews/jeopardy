@@ -97,89 +97,101 @@
 
 @media (max-width: $breakpoint-mobile) {
 	.gameBoardContainer {
-		padding: 12px;
+		padding: 8px;
 		justify-content: flex-start;
 	}
 
 	.gameBoardHeader {
-		margin-bottom: 15px;
+		margin-bottom: 8px;
 
 		.jeopardyLogoSmall {
-			max-width: 280px;
+			max-width: 200px;
 		}
 	}
 
 	.playerScoreboard {
-		padding: 12px;
-		margin-bottom: 18px;
+		padding: 8px 10px;
+		margin-bottom: 8px;
 
 		.scoreboardTitle {
-			font-size: 18px;
-			margin-bottom: 12px;
-			letter-spacing: 1px;
+			font-size: 14px;
+			margin-bottom: 6px;
+			letter-spacing: 0.5px;
 		}
 
 		.playerList {
-			flex-direction: column;
-			gap: 10px;
+			flex-direction: row;
+			gap: 6px;
+			justify-content: center;
 		}
 
 		.playerCard {
-			min-width: 100%;
-			padding: 10px 16px;
+			min-width: auto;
+			padding: 6px 10px;
+			flex: 1;
+			max-width: 120px;
 
 			.playerName {
-				font-size: 16px;
+				font-size: 12px;
+				margin-bottom: 4px;
 
 				.turnIndicator {
-					font-size: 20px;
+					font-size: 14px;
 				}
 			}
 
 			.playerScore {
-				font-size: 24px;
+				font-size: 16px;
 			}
 		}
 	}
 
 	.gameBoard {
-		padding: 12px;
+		padding: 8px;
+		border-radius: 10px;
 	}
 
 	.categoryHeaders {
-		grid-template-columns: repeat(3, 1fr);
-		gap: 8px;
+		grid-template-columns: repeat(6, 1fr);
+		gap: 4px;
+		margin-bottom: 4px;
 	}
 
 	.categoryHeader {
-		min-height: 65px;
-		padding: 10px 6px;
+		min-height: 45px;
+		padding: 4px 2px;
+		border-radius: 4px;
+		border-width: 2px;
 
 		.categoryHeaderTitle {
-			font-size: 13px;
-			letter-spacing: 0.5px;
+			font-size: 9px;
+			letter-spacing: 0;
+			line-height: 1.2;
 		}
 	}
 
 	.boardGrid {
-		gap: 8px;
+		gap: 4px;
 	}
 
 	.boardRow {
-		grid-template-columns: repeat(3, 1fr);
-		gap: 8px;
+		grid-template-columns: repeat(6, 1fr);
+		gap: 4px;
 	}
 
 	.boardCell {
-		min-height: 65px;
-		font-size: 18px;
+		min-height: 48px;
+		font-size: 14px;
+		border-radius: 4px;
+		border-width: 2px;
 
 		&:hover:not(:disabled) {
-			transform: scale(1.05) translateY(-2px);
+			transform: scale(1.05);
 		}
 
 		.cellValue {
-			font-size: 18px;
+			font-size: 13px;
+			font-weight: 800;
 		}
 	}
 
@@ -246,6 +258,51 @@
 			.setupHint {
 				font-size: 13px;
 			}
+		}
+	}
+}
+
+@media (max-width: 400px) {
+	.gameBoardHeader {
+		.jeopardyLogoSmall {
+			max-width: 180px;
+		}
+	}
+
+	.playerScoreboard {
+		padding: 6px 8px;
+
+		.scoreboardTitle {
+			font-size: 13px;
+		}
+
+		.playerCard {
+			padding: 5px 8px;
+
+			.playerName {
+				font-size: 11px;
+			}
+
+			.playerScore {
+				font-size: 15px;
+			}
+		}
+	}
+
+	.categoryHeader {
+		min-height: 40px;
+		padding: 3px 1px;
+
+		.categoryHeaderTitle {
+			font-size: 8px;
+		}
+	}
+
+	.boardCell {
+		min-height: 44px;
+
+		.cellValue {
+			font-size: 12px;
 		}
 	}
 }
