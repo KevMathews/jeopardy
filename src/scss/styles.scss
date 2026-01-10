@@ -1,5 +1,8 @@
 @import "reset";
 @import url('https://fonts.googleapis.com/css2?family=Krona+One&family=Lato&family=Noto+Sans+JP:wght@300&display=swap');
+@import "variables";
+@import "gameboard";
+@import "responsive";
 body {
   font-family: 'Roboto', sans-serif;
   background:url('https://i.imgur.com/7BwlRhZ.png');
