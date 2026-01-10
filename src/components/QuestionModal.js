@@ -14,8 +14,10 @@ export default function QuestionModal({
 	const [showAnswer, setShowAnswer] = useState(false);
 	const [timeRemaining, setTimeRemaining] = useState(TIMER_DURATION);
 	const [isTimerActive, setIsTimerActive] = useState(true);
+	const [timedOut, setTimedOut] = useState(false);
 	const timerRef = useRef(null);
 	const startTimeRef = useRef(Date.now());
+	const buzzerRef = useRef(null);
 
 	useEffect(() => {
 		// Start timer when modal opens
@@ -31,8 +33,16 @@ export default function QuestionModal({
 				timerRef.current = requestAnimationFrame(updateTimer);
 			} else {
 				setIsTimerActive(false);
-				// Timer expired - player loses points
-				onIncorrect();
+				setTimedOut(true);
+				setShowAnswer(true);
+
+				// Play double buzzer sound
+				playBuzzer();
+
+				// Auto-close after 3 seconds
+				setTimeout(() => {
+					onIncorrect();
+				}, 3000);
 			}
 		};
 
@@ -44,6 +54,33 @@ export default function QuestionModal({
 			}
 		};
 	}, [onIncorrect]);
+
+	const playBuzzer = () => {
+		// Create double buzz sound using Web Audio API
+		const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+		const playBuzz = (delay) => {
+			const oscillator = audioContext.createOscillator();
+			const gainNode = audioContext.createGain();
+
+			oscillator.connect(gainNode);
+			gainNode.connect(audioContext.destination);
+
+			oscillator.type = 'sawtooth';
+			oscillator.frequency.value = 200; // Low buzzer frequency
+
+			gainNode.gain.setValueAtTime(0, audioContext.currentTime + delay);
+			gainNode.gain.linearRampToValueAtTime(0.3, audioContext.currentTime + delay + 0.01);
+			gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + delay + 0.3);
+
+			oscillator.start(audioContext.currentTime + delay);
+			oscillator.stop(audioContext.currentTime + delay + 0.3);
+		};
+
+		// Play two buzzes
+		playBuzz(0);
+		playBuzz(0.35);
+	};
 
 	const handleShowAnswer = () => {
 		setShowAnswer(true);
@@ -57,7 +94,7 @@ export default function QuestionModal({
 
 	return (
 		<div className="modalOverlay" onClick={onClose}>
-			<div className="questionModal" onClick={(e) => e.stopPropagation()}>
+			<div className={`questionModal ${timedOut ? 'timedOut' : ''}`} onClick={(e) => e.stopPropagation()}>
 				<button className="modalCloseButton" onClick={onClose}>
 					×
 				</button>
@@ -101,20 +138,28 @@ export default function QuestionModal({
 								{clue.answer}
 							</div>
 
-							<div className="modalActions">
-								<button
-									className="modalButton correctButton"
-									onClick={onCorrect}
-								>
-									✓ Correct
-								</button>
-								<button
-									className="modalButton incorrectButton"
-									onClick={onIncorrect}
-								>
-									✗ Incorrect
-								</button>
-							</div>
+							{!timedOut && (
+								<div className="modalActions">
+									<button
+										className="modalButton correctButton"
+										onClick={onCorrect}
+									>
+										✓ Correct
+									</button>
+									<button
+										className="modalButton incorrectButton"
+										onClick={onIncorrect}
+									>
+										✗ Incorrect
+									</button>
+								</div>
+							)}
+
+							{timedOut && (
+								<div className="timeoutMessage">
+									TIME'S UP! Points deducted.
+								</div>
+							)}
 						</>
 					)}
 				</div>
