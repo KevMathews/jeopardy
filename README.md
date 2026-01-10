@@ -1,6 +1,6 @@
 # JEOPARDY!
 #### Refactored game to work fully on mobile now
-### [Live Game Demo](http://jeopardy-km.herokuapp.com/)
+### [Live Game Demo](http://jeopardy.kevmathews.com/)
 
 <br />
 
