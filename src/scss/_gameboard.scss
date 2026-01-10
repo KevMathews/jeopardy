@@ -589,3 +589,970 @@
 		left: 100%;
 	}
 }
+
+.modalOverlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: rgba(0, 0, 0, 0.85);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: $z-index-overlay;
+	animation: fadeIn 0.3s ease-out;
+	padding: 20px;
+	box-sizing: border-box;
+}
+
+.questionModal {
+	background: linear-gradient(135deg, #ffffff 0%, #f5f5f5 100%);
+	border: 6px solid $yellow-accent;
+	border-radius: 20px;
+	padding: 40px;
+	max-width: 700px;
+	width: 100%;
+	max-height: 90vh;
+	overflow-y: auto;
+	box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6),
+	            0 0 0 3px $primary-blue,
+	            inset 0 2px 4px rgba(255, 255, 255, 0.9);
+	animation: fadeInScale 0.4s ease-out;
+	position: relative;
+}
+
+.modalCloseButton {
+	position: absolute;
+	top: 15px;
+	right: 15px;
+	background: $incorrect-red;
+	border: none;
+	border-radius: 50%;
+	width: 40px;
+	height: 40px;
+	font-size: 28px;
+	line-height: 1;
+	color: $white;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	box-shadow: 0 4px 12px rgba(255, 0, 72, 0.4);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	&:hover {
+		background: darken($incorrect-red, 10%);
+		transform: scale(1.1) rotate(90deg);
+		box-shadow: 0 6px 20px rgba(255, 0, 72, 0.6);
+	}
+
+	&:active {
+		transform: scale(0.95) rotate(90deg);
+	}
+}
+
+.modalHeader {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 30px;
+	padding-bottom: 20px;
+	border-bottom: 3px solid $yellow-accent;
+}
+
+.modalCategory {
+	font-size: 24px;
+	font-weight: bold;
+	color: $primary-blue;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	flex: 1;
+}
+
+.modalValue {
+	font-size: 32px;
+	font-weight: bold;
+	color: $correct-green;
+	text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.modalContent {
+	display: flex;
+	flex-direction: column;
+	gap: 25px;
+}
+
+.modalCurrentPlayer {
+	text-align: center;
+	font-size: 20px;
+	font-weight: bold;
+	color: $primary-blue;
+	background: linear-gradient(135deg, $yellow-accent 0%, #ffd700 100%);
+	padding: 12px;
+	border-radius: 10px;
+	box-shadow: 0 4px 12px rgba(255, 255, 0, 0.4);
+}
+
+.modalQuestion {
+	font-size: 26px;
+	color: $dark-gray;
+	line-height: 1.5;
+	text-align: center;
+	padding: 30px;
+	background: linear-gradient(135deg, #e8f4ff 0%, #d0e8ff 100%);
+	border-radius: 12px;
+	border: 3px solid $primary-blue;
+	box-shadow: inset 0 2px 8px rgba(0, 39, 170, 0.1);
+	min-height: 120px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.modalAnswer {
+	font-size: 28px;
+	font-weight: bold;
+	color: $primary-blue;
+	text-align: center;
+	padding: 25px;
+	background: linear-gradient(135deg, #fff9e6 0%, #ffe6b3 100%);
+	border-radius: 12px;
+	border: 3px solid $yellow-accent;
+	box-shadow: 0 0 20px rgba(255, 255, 0, 0.4);
+	animation: fadeInScale 0.4s ease-out;
+}
+
+.modalButton {
+	padding: 18px 40px;
+	font-size: 22px;
+	font-weight: bold;
+	border: none;
+	border-radius: 12px;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+	position: relative;
+	overflow: hidden;
+
+	&::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: -100%;
+		width: 100%;
+		height: 100%;
+		background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+		transition: left 0.5s ease;
+	}
+
+	&:hover::before {
+		left: 100%;
+	}
+
+	&:active {
+		transform: scale(0.97);
+	}
+}
+
+.showAnswerButton {
+	background: linear-gradient(135deg, $cyan-accent 0%, darken($cyan-accent, 10%) 100%);
+	color: $dark-gray;
+	align-self: center;
+	min-width: 250px;
+
+	&:hover {
+		background: linear-gradient(135deg, lighten($cyan-accent, 5%) 0%, $cyan-accent 100%);
+		box-shadow: 0 8px 30px rgba(16, 255, 243, 0.5);
+		transform: translateY(-2px);
+	}
+}
+
+.modalActions {
+	display: flex;
+	gap: 20px;
+	justify-content: center;
+}
+
+.correctButton {
+	background: linear-gradient(135deg, $correct-green 0%, darken($correct-green, 8%) 100%);
+	color: $white;
+	flex: 1;
+	max-width: 250px;
+
+	&:hover {
+		background: linear-gradient(135deg, lighten($correct-green, 5%) 0%, $correct-green 100%);
+		box-shadow: 0 8px 30px rgba(31, 204, 0, 0.5);
+		transform: translateY(-2px);
+	}
+}
+
+.incorrectButton {
+	background: linear-gradient(135deg, $incorrect-red 0%, darken($incorrect-red, 8%) 100%);
+	color: $white;
+	flex: 1;
+	max-width: 250px;
+
+	&:hover {
+		background: linear-gradient(135deg, lighten($incorrect-red, 5%) 0%, $incorrect-red 100%);
+		box-shadow: 0 8px 30px rgba(255, 0, 72, 0.5);
+		transform: translateY(-2px);
+	}
+}
+
+// Daily Double Modal Styles
+.dailyDoubleModal {
+	background: linear-gradient(135deg, #fff9e6 0%, #ffe6b3 100%);
+	border: 8px solid $yellow-accent;
+	border-radius: 25px;
+	padding: 50px;
+	max-width: 650px;
+	width: 100%;
+	max-height: 90vh;
+	overflow-y: auto;
+	box-shadow: 0 25px 70px rgba(0, 0, 0, 0.7),
+	            0 0 0 4px $primary-blue,
+	            0 0 40px rgba(255, 215, 0, 0.8),
+	            inset 0 2px 4px rgba(255, 255, 255, 0.9);
+	animation: fadeInScale 0.5s ease-out, pulse 2s ease-in-out;
+	position: relative;
+}
+
+.dailyDoubleHeader {
+	text-align: center;
+	margin-bottom: 35px;
+	padding-bottom: 25px;
+	border-bottom: 4px solid $yellow-accent;
+}
+
+.dailyDoubleAnnouncement {
+	font-size: 56px;
+	font-weight: bold;
+	color: $primary-blue;
+	text-transform: uppercase;
+	letter-spacing: 4px;
+	text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3),
+	             0 0 20px rgba(255, 215, 0, 0.6);
+	animation: pulse 2s ease-in-out infinite;
+	margin-bottom: 15px;
+}
+
+.dailyDoubleCategory {
+	font-size: 22px;
+	font-weight: bold;
+	color: darken($primary-blue, 10%);
+	text-transform: uppercase;
+	letter-spacing: 2px;
+}
+
+.dailyDoubleContent {
+	display: flex;
+	flex-direction: column;
+	gap: 25px;
+}
+
+.dailyDoublePlayer {
+	text-align: center;
+	font-size: 22px;
+	font-weight: bold;
+	color: $primary-blue;
+	background: linear-gradient(135deg, $yellow-accent 0%, #ffd700 100%);
+	padding: 14px;
+	border-radius: 12px;
+	box-shadow: 0 6px 16px rgba(255, 215, 0, 0.5);
+}
+
+.dailyDoubleScore {
+	text-align: center;
+	font-size: 20px;
+	font-weight: bold;
+	color: $primary-blue;
+	padding: 12px;
+	background: linear-gradient(135deg, #e8f4ff 0%, #d0e8ff 100%);
+	border-radius: 10px;
+	border: 2px solid $primary-blue;
+}
+
+.wagerSection {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	padding: 25px;
+	background: linear-gradient(135deg, #ffffff 0%, #f8f8f8 100%);
+	border-radius: 15px;
+	border: 3px solid $yellow-accent;
+	box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.wagerLabel {
+	font-size: 20px;
+	font-weight: bold;
+	color: $dark-gray;
+	text-align: center;
+}
+
+.wagerInput {
+	width: 100%;
+	padding: 18px;
+	font-size: 28px;
+	text-align: center;
+	border: 3px solid $primary-blue;
+	border-radius: 12px;
+	background: $white;
+	color: $dark-gray;
+	font-weight: bold;
+	transition: all 0.3s ease;
+	box-sizing: border-box;
+
+	&:focus {
+		outline: none;
+		border-color: $yellow-accent;
+		box-shadow: 0 0 20px rgba(255, 215, 0, 0.4),
+		            inset 0 2px 6px rgba(0, 0, 0, 0.05);
+	}
+
+	&::placeholder {
+		color: lighten($dark-gray, 30%);
+	}
+}
+
+.wagerHint {
+	font-size: 16px;
+	color: lighten($dark-gray, 20%);
+	text-align: center;
+}
+
+.wagerError {
+	font-size: 16px;
+	color: $incorrect-red;
+	text-align: center;
+	font-weight: bold;
+	padding: 10px;
+	background: lighten($incorrect-red, 45%);
+	border-radius: 8px;
+	border: 2px solid $incorrect-red;
+}
+
+.submitWagerButton {
+	background: linear-gradient(135deg, $correct-green 0%, darken($correct-green, 8%) 100%);
+	color: $white;
+	align-self: center;
+	min-width: 280px;
+
+	&:hover {
+		background: linear-gradient(135deg, lighten($correct-green, 5%) 0%, $correct-green 100%);
+		box-shadow: 0 10px 35px rgba(31, 204, 0, 0.6);
+		transform: translateY(-3px);
+	}
+}
+
+// Round Transition Styles
+.transitionOverlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: linear-gradient(135deg, rgba(0, 39, 170, 0.95) 0%, rgba(0, 20, 100, 0.95) 100%);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: $z-index-overlay;
+	animation: fadeIn 0.5s ease-out;
+	padding: 20px;
+	box-sizing: border-box;
+}
+
+.transitionCard {
+	background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
+	border: 8px solid $yellow-accent;
+	border-radius: 30px;
+	padding: 50px;
+	max-width: 700px;
+	width: 100%;
+	box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8),
+	            0 0 0 4px $primary-blue,
+	            inset 0 2px 4px rgba(255, 255, 255, 0.9);
+	animation: fadeInScale 0.6s ease-out;
+	position: relative;
+}
+
+.transitionHeader {
+	text-align: center;
+	margin-bottom: 40px;
+	padding-bottom: 25px;
+	border-bottom: 5px solid $yellow-accent;
+}
+
+.transitionTitle {
+	font-size: 48px;
+	font-weight: bold;
+	color: $primary-blue;
+	text-transform: uppercase;
+	letter-spacing: 3px;
+	text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
+	margin: 0;
+}
+
+.transitionContent {
+	display: flex;
+	flex-direction: column;
+	gap: 35px;
+}
+
+.transitionScores {
+	background: linear-gradient(135deg, #e8f4ff 0%, #d0e8ff 100%);
+	border-radius: 20px;
+	padding: 30px;
+	border: 4px solid $primary-blue;
+	box-shadow: inset 0 2px 10px rgba(0, 39, 170, 0.1);
+}
+
+.scoresTitle {
+	font-size: 28px;
+	font-weight: bold;
+	color: $primary-blue;
+	text-align: center;
+	margin: 0 0 25px 0;
+	text-transform: uppercase;
+	letter-spacing: 2px;
+}
+
+.scoresList {
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
+}
+
+.transitionPlayerCard {
+	background: linear-gradient(135deg, $white 0%, #f8f8f8 100%);
+	border: 3px solid $primary-blue;
+	border-radius: 15px;
+	padding: 20px 25px;
+	display: flex;
+	align-items: center;
+	gap: 15px;
+	transition: all 0.3s ease;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+	&.leading {
+		background: linear-gradient(135deg, #fff9e6 0%, #ffe6b3 100%);
+		border-color: $yellow-accent;
+		border-width: 4px;
+		box-shadow: 0 8px 24px rgba(255, 215, 0, 0.4),
+		            0 0 20px rgba(255, 215, 0, 0.3);
+		transform: scale(1.05);
+	}
+
+	&:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+	}
+
+	.playerRank {
+		font-size: 32px;
+		min-width: 40px;
+	}
+
+	.playerName {
+		flex: 1;
+		font-size: 24px;
+		font-weight: bold;
+		color: $dark-gray;
+	}
+
+	.playerScore {
+		font-size: 28px;
+		font-weight: bold;
+		color: $primary-blue;
+		min-width: 100px;
+		text-align: right;
+	}
+}
+
+.transitionMessage {
+	font-size: 26px;
+	font-weight: bold;
+	color: $primary-blue;
+	text-align: center;
+	background: linear-gradient(135deg, $yellow-accent 0%, #ffd700 100%);
+	padding: 20px;
+	border-radius: 15px;
+	box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
+	text-transform: uppercase;
+	letter-spacing: 2px;
+}
+
+.continueButton {
+	background: linear-gradient(135deg, $correct-green 0%, darken($correct-green, 8%) 100%);
+	border: none;
+	border-radius: 16px;
+	padding: 24px 50px;
+	font-size: 26px;
+	font-weight: bold;
+	color: $white;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	box-shadow: 0 8px 24px rgba(31, 204, 0, 0.4);
+	text-transform: uppercase;
+	letter-spacing: 2px;
+	align-self: center;
+	min-width: 320px;
+	position: relative;
+	overflow: hidden;
+
+	&::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: -100%;
+		width: 100%;
+		height: 100%;
+		background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+		transition: left 0.5s ease;
+	}
+
+	&:hover {
+		background: linear-gradient(135deg, lighten($correct-green, 5%) 0%, $correct-green 100%);
+		transform: translateY(-4px);
+		box-shadow: 0 12px 36px rgba(31, 204, 0, 0.6);
+
+		&::before {
+			left: 100%;
+		}
+	}
+
+	&:active {
+		transform: translateY(-2px);
+	}
+}
+
+// Final Jeopardy Modal Styles
+.finalJeopardyModal {
+	background: linear-gradient(135deg, #1a0033 0%, #0d001a 100%);
+	border: 10px solid $yellow-accent;
+	border-radius: 30px;
+	padding: 50px;
+	max-width: 750px;
+	width: 100%;
+	max-height: 90vh;
+	overflow-y: auto;
+	box-shadow: 0 30px 90px rgba(0, 0, 0, 0.9),
+	            0 0 0 5px $primary-blue,
+	            0 0 50px rgba(138, 43, 226, 0.8),
+	            inset 0 2px 4px rgba(255, 255, 255, 0.1);
+	animation: fadeInScale 0.6s ease-out;
+	position: relative;
+	color: $white;
+}
+
+.finalJeopardyHeader {
+	text-align: center;
+	margin-bottom: 40px;
+	padding-bottom: 25px;
+	border-bottom: 5px solid $yellow-accent;
+}
+
+.finalJeopardyTitle {
+	font-size: 58px;
+	font-weight: bold;
+	color: $yellow-accent;
+	text-transform: uppercase;
+	letter-spacing: 5px;
+	text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.8),
+	             0 0 30px rgba(255, 215, 0, 0.8);
+	animation: pulse 3s ease-in-out infinite;
+	margin: 0;
+}
+
+.fjStepTitle {
+	font-size: 38px;
+	font-weight: bold;
+	color: $yellow-accent;
+	text-transform: uppercase;
+	letter-spacing: 3px;
+	text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.6);
+	margin: 0;
+}
+
+.fjCategoryTitle {
+	font-size: 42px;
+	font-weight: bold;
+	color: $yellow-accent;
+	text-transform: uppercase;
+	letter-spacing: 3px;
+	text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.6);
+	margin: 0;
+}
+
+.finalJeopardyContent {
+	display: flex;
+	flex-direction: column;
+	gap: 30px;
+}
+
+.finalJeopardyIntro {
+	background: linear-gradient(135deg, rgba(0, 39, 170, 0.3) 0%, rgba(0, 20, 100, 0.3) 100%);
+	border-radius: 20px;
+	padding: 30px;
+	border: 3px solid rgba(255, 255, 255, 0.2);
+}
+
+.fjIntroText {
+	font-size: 22px;
+	color: $white;
+	text-align: center;
+	margin: 0 0 25px 0;
+	line-height: 1.6;
+}
+
+.fjPlayerList {
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
+}
+
+.fjPlayerInfo {
+	background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+	border: 2px solid rgba(255, 255, 255, 0.3);
+	border-radius: 12px;
+	padding: 15px 20px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	transition: all 0.3s ease;
+
+	&:hover {
+		background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.1) 100%);
+		border-color: $yellow-accent;
+		transform: translateX(5px);
+	}
+}
+
+.fjPlayerName {
+	font-size: 22px;
+	font-weight: bold;
+	color: $white;
+}
+
+.fjPlayerScore {
+	font-size: 24px;
+	font-weight: bold;
+	color: $yellow-accent;
+}
+
+.fjCurrentPlayer {
+	text-align: center;
+	font-size: 26px;
+	font-weight: bold;
+	color: $yellow-accent;
+	background: linear-gradient(135deg, rgba(255, 215, 0, 0.2) 0%, rgba(255, 215, 0, 0.1) 100%);
+	padding: 18px;
+	border-radius: 15px;
+	border: 3px solid $yellow-accent;
+	box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+}
+
+.fjCategoryMessage {
+	font-size: 22px;
+	color: $white;
+	text-align: center;
+	background: linear-gradient(135deg, rgba(0, 39, 170, 0.3) 0%, rgba(0, 20, 100, 0.3) 100%);
+	padding: 25px;
+	border-radius: 15px;
+	border: 3px solid rgba(255, 255, 255, 0.2);
+	line-height: 1.6;
+}
+
+.fjInfoRow {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	font-size: 20px;
+	color: $white;
+	padding: 12px 0;
+	border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+
+	&:last-child {
+		border-bottom: none;
+	}
+}
+
+.fjValue {
+	font-weight: bold;
+	color: $yellow-accent;
+	font-size: 24px;
+}
+
+.fjAnswerPrompt {
+	font-size: 24px;
+	font-weight: bold;
+	color: $white;
+	text-align: center;
+	background: linear-gradient(135deg, rgba(0, 39, 170, 0.4) 0%, rgba(0, 20, 100, 0.4) 100%);
+	padding: 20px;
+	border-radius: 15px;
+	border: 3px solid rgba(255, 255, 255, 0.3);
+}
+
+.fjContinueButton {
+	background: linear-gradient(135deg, #8a2be2 0%, #6a1bb2 100%);
+	color: $white;
+
+	&:hover {
+		background: linear-gradient(135deg, #9d3ef5 0%, #8a2be2 100%);
+		box-shadow: 0 10px 35px rgba(138, 43, 226, 0.6);
+	}
+}
+
+// Game Complete Styles
+.gameCompleteCard {
+	background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
+	border: 10px solid $yellow-accent;
+	border-radius: 35px;
+	padding: 60px;
+	max-width: 800px;
+	width: 100%;
+	box-shadow: 0 35px 90px rgba(0, 0, 0, 0.8),
+	            0 0 0 5px $primary-blue,
+	            0 0 60px rgba(255, 215, 0, 0.8),
+	            inset 0 2px 4px rgba(255, 255, 255, 0.9);
+	animation: fadeInScale 0.8s ease-out;
+	position: relative;
+}
+
+.gameCompleteHeader {
+	text-align: center;
+	margin-bottom: 45px;
+	padding-bottom: 30px;
+	border-bottom: 6px solid $yellow-accent;
+}
+
+.gameCompleteTitle {
+	font-size: 58px;
+	font-weight: bold;
+	color: $primary-blue;
+	text-transform: uppercase;
+	letter-spacing: 4px;
+	text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3),
+	             0 0 30px rgba(255, 215, 0, 0.6);
+	animation: pulse 4s ease-in-out infinite;
+	margin: 0;
+}
+
+.gameCompleteContent {
+	display: flex;
+	flex-direction: column;
+	gap: 40px;
+}
+
+.winnerSection {
+	text-align: center;
+	background: linear-gradient(135deg, #fff9e6 0%, #ffe6b3 100%);
+	border-radius: 25px;
+	padding: 40px;
+	border: 6px solid $yellow-accent;
+	box-shadow: 0 10px 40px rgba(255, 215, 0, 0.5),
+	            inset 0 2px 8px rgba(255, 215, 0, 0.2);
+	position: relative;
+	overflow: hidden;
+
+	&::before {
+		content: '';
+		position: absolute;
+		top: -50%;
+		left: -50%;
+		width: 200%;
+		height: 200%;
+		background: radial-gradient(circle, rgba(255, 215, 0, 0.2) 0%, transparent 70%);
+		animation: shimmer 3s ease-in-out infinite;
+	}
+}
+
+.winnerAnnouncement {
+	font-size: 52px;
+	font-weight: bold;
+	color: $primary-blue;
+	text-transform: uppercase;
+	letter-spacing: 3px;
+	margin-bottom: 20px;
+	text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
+	position: relative;
+	z-index: 1;
+}
+
+.winnerScore {
+	font-size: 64px;
+	font-weight: bold;
+	color: $correct-green;
+	text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3);
+	margin-bottom: 20px;
+	position: relative;
+	z-index: 1;
+}
+
+.winnerTrophy {
+	font-size: 120px;
+	animation: bounceLeft 2s ease-in-out infinite;
+	position: relative;
+	z-index: 1;
+}
+
+.finalScoreboard {
+	background: linear-gradient(135deg, #e8f4ff 0%, #d0e8ff 100%);
+	border-radius: 25px;
+	padding: 35px;
+	border: 5px solid $primary-blue;
+	box-shadow: inset 0 2px 12px rgba(0, 39, 170, 0.1);
+}
+
+.finalScoresTitle {
+	font-size: 32px;
+	font-weight: bold;
+	color: $primary-blue;
+	text-align: center;
+	margin: 0 0 30px 0;
+	text-transform: uppercase;
+	letter-spacing: 2px;
+}
+
+.finalScoresList {
+	display: flex;
+	flex-direction: column;
+	gap: 18px;
+}
+
+.finalPlayerCard {
+	background: linear-gradient(135deg, $white 0%, #f8f8f8 100%);
+	border: 4px solid $primary-blue;
+	border-radius: 18px;
+	padding: 22px 28px;
+	display: flex;
+	align-items: center;
+	gap: 20px;
+	transition: all 0.3s ease;
+	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+
+	&.winner {
+		background: linear-gradient(135deg, #fff9e6 0%, #ffe6b3 100%);
+		border-color: $yellow-accent;
+		border-width: 5px;
+		box-shadow: 0 10px 30px rgba(255, 215, 0, 0.5),
+		            0 0 25px rgba(255, 215, 0, 0.4);
+		transform: scale(1.08);
+
+		.finalRank {
+			animation: pulse 2s ease-in-out infinite;
+		}
+	}
+
+	&:hover {
+		transform: translateX(8px);
+		box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+	}
+}
+
+.finalRank {
+	font-size: 38px;
+	min-width: 50px;
+	text-align: center;
+}
+
+.finalPlayerName {
+	flex: 1;
+	font-size: 28px;
+	font-weight: bold;
+	color: $dark-gray;
+}
+
+.finalPlayerScore {
+	font-size: 32px;
+	font-weight: bold;
+	color: $primary-blue;
+	min-width: 120px;
+	text-align: right;
+}
+
+.gameStats {
+	background: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(240, 240, 240, 0.8) 100%);
+	border-radius: 20px;
+	padding: 28px 35px;
+	border: 4px solid rgba(0, 39, 170, 0.3);
+	display: flex;
+	justify-content: space-around;
+	flex-wrap: wrap;
+	gap: 25px;
+}
+
+.statItem {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 8px;
+	min-width: 150px;
+}
+
+.statLabel {
+	font-size: 16px;
+	color: lighten($dark-gray, 20%);
+	text-transform: uppercase;
+	letter-spacing: 1px;
+}
+
+.statValue {
+	font-size: 40px;
+	font-weight: bold;
+	color: $primary-blue;
+	text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.gameCompleteActions {
+	display: flex;
+	justify-content: center;
+	gap: 25px;
+}
+
+.playAgainButton {
+	background: linear-gradient(135deg, $correct-green 0%, darken($correct-green, 8%) 100%);
+	border: none;
+	border-radius: 18px;
+	padding: 26px 55px;
+	font-size: 28px;
+	font-weight: bold;
+	color: $white;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	box-shadow: 0 10px 30px rgba(31, 204, 0, 0.4);
+	text-transform: uppercase;
+	letter-spacing: 2px;
+	min-width: 350px;
+	position: relative;
+	overflow: hidden;
+
+	&::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: -100%;
+		width: 100%;
+		height: 100%;
+		background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+		transition: left 0.5s ease;
+	}
+
+	&:hover {
+		background: linear-gradient(135deg, lighten($correct-green, 5%) 0%, $correct-green 100%);
+		transform: translateY(-5px);
+		box-shadow: 0 15px 45px rgba(31, 204, 0, 0.6);
+
+		&::before {
+			left: 100%;
+		}
+	}
+
+	&:active {
+		transform: translateY(-3px);
+	}
+}

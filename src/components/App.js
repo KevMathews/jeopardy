@@ -5,15 +5,25 @@ import Value from './Value';
 import Category from './Category';
 import GameSetup from './GameSetup';
 import GameBoard from './GameBoard';
+import QuestionModal from './QuestionModal';
+import DailyDoubleModal from './DailyDoubleModal';
+import RoundTransition from './RoundTransition';
+import FinalJeopardyModal from './FinalJeopardyModal';
+import GameComplete from './GameComplete';
 import { GAME_PHASES, INITIAL_GAME_STATE } from '../constants/gameConfig';
-import { initializeGame, startRound1 } from '../utils/gameStateManager';
+import { initializeGame, startRound1, startRound2, startFinalJeopardy, isRoundComplete, completeGame } from '../utils/gameStateManager';
 import { loadGameState, clearGameState } from '../utils/localStorageService';
+import { submitAnswer, selectCell } from '../utils/gameStateManager';
 
 export default function App(props) {
 	const [gameState, setGameState] = useState(INITIAL_GAME_STATE);
 	const [question, updateQuestion] = useState({});
 	const [isVisible, setIsVisible] = useState(false);
 	const toggleTrueFalse = () => setIsVisible(!isVisible);
+	const [selectedCellData, setSelectedCellData] = useState(null);
+	const [showDailyDoubleModal, setShowDailyDoubleModal] = useState(false);
+	const [dailyDoubleWager, setDailyDoubleWager] = useState(null);
+	const [showRoundTransition, setShowRoundTransition] = useState(false);
 
 	useEffect(() => {
 		const savedState = loadGameState();
@@ -42,6 +52,15 @@ export default function App(props) {
 		}
 	}, [gameState.phase]);
 
+	// Check if round is complete after each state change
+	useEffect(() => {
+		if ((gameState.phase === GAME_PHASES.ROUND_1 || gameState.phase === GAME_PHASES.ROUND_2) &&
+		    isRoundComplete(gameState) &&
+		    !showRoundTransition) {
+			setShowRoundTransition(true);
+		}
+	}, [gameState, showRoundTransition]);
+
 	const handleStartGame = async (playerNames) => {
 		try {
 			const initialState = initializeGame(playerNames);
@@ -58,7 +77,112 @@ export default function App(props) {
 	};
 
 	const handleCellClick = (cellData) => {
-		console.log('Cell clicked:', cellData);
+		setSelectedCellData(cellData);
+		const updatedState = selectCell(gameState, cellData.cellId);
+		setGameState(updatedState);
+
+		// If it's a Daily Double, show the wager modal first
+		if (cellData.isDailyDouble) {
+			setShowDailyDoubleModal(true);
+		}
+	};
+
+	const handleWagerSubmit = (wager) => {
+		setDailyDoubleWager(wager);
+		setShowDailyDoubleModal(false);
+		// Question modal will now show automatically since selectedCellData is set
+	};
+
+	const handleCorrectAnswer = () => {
+		if (!selectedCellData) return;
+
+		// Use wager for Daily Doubles, otherwise use cell value
+		const pointValue = dailyDoubleWager !== null ? dailyDoubleWager : selectedCellData.value;
+
+		const updatedState = submitAnswer(
+			gameState,
+			true,
+			selectedCellData.value,
+			dailyDoubleWager
+		);
+		setGameState(updatedState);
+		setSelectedCellData(null);
+		setDailyDoubleWager(null);
+	};
+
+	const handleIncorrectAnswer = () => {
+		if (!selectedCellData) return;
+
+		const updatedState = submitAnswer(
+			gameState,
+			false,
+			selectedCellData.value,
+			dailyDoubleWager
+		);
+		setGameState(updatedState);
+		setSelectedCellData(null);
+		setDailyDoubleWager(null);
+	};
+
+	const handleCloseModal = () => {
+		setSelectedCellData(null);
+		setShowDailyDoubleModal(false);
+		setDailyDoubleWager(null);
+	};
+
+	const handleContinueToNextRound = async () => {
+		try {
+			if (gameState.currentRound === 1) {
+				const round2State = await startRound2(gameState);
+				setGameState(round2State);
+				setShowRoundTransition(false);
+			} else if (gameState.currentRound === 2) {
+				const finalJeopardyState = await startFinalJeopardy(gameState);
+				setGameState(finalJeopardyState);
+				setShowRoundTransition(false);
+			}
+		} catch (error) {
+			console.error('Error starting next round:', error);
+		}
+	};
+
+	const handleFinalJeopardyComplete = (results, wager, isCorrect, eligiblePlayers, currentAnswerPlayer) => {
+		// Calculate final scores
+		const updatedPlayers = gameState.players.map(player => {
+			const result = results[player.id];
+			if (result) {
+				return {
+					...player,
+					score: player.score + result.scoreChange
+				};
+			}
+			return player;
+		});
+
+		// Handle the last player's answer
+		const lastPlayer = eligiblePlayers[currentAnswerPlayer];
+		const lastResult = {
+			wager,
+			isCorrect,
+			scoreChange: isCorrect ? wager : -wager
+		};
+
+		const finalPlayers = updatedPlayers.map(player => {
+			if (player.id === lastPlayer.id) {
+				return {
+					...player,
+					score: player.score + lastResult.scoreChange
+				};
+			}
+			return player;
+		});
+
+		// Complete the game
+		const completeState = completeGame({
+			...gameState,
+			players: finalPlayers
+		});
+		setGameState(completeState);
 	};
 
 	async function handleFetch() {
@@ -84,9 +208,63 @@ export default function App(props) {
 
 	if (gameState.phase === GAME_PHASES.ROUND_1 || gameState.phase === GAME_PHASES.ROUND_2) {
 		return (
-			<GameBoard
+			<>
+				<GameBoard
+					gameState={gameState}
+					onCellClick={handleCellClick}
+				/>
+				{/* Show Round Transition when round is complete */}
+				{showRoundTransition && (
+					<RoundTransition
+						currentRound={gameState.currentRound}
+						players={gameState.players}
+						onContinue={handleContinueToNextRound}
+					/>
+				)}
+				{/* Show Daily Double Modal first if it's a Daily Double */}
+				{showDailyDoubleModal && selectedCellData && !showRoundTransition && (
+					<DailyDoubleModal
+						category={gameState.categories[selectedCellData.categoryIndex].title}
+						currentPlayer={gameState.players[gameState.currentPlayerIndex]}
+						onWagerSubmit={handleWagerSubmit}
+						onClose={handleCloseModal}
+					/>
+				)}
+				{/* Show Question Modal after Daily Double wager or immediately for regular questions */}
+				{selectedCellData && !showDailyDoubleModal && !showRoundTransition && (
+					<QuestionModal
+						clue={selectedCellData.clue}
+						value={dailyDoubleWager !== null ? dailyDoubleWager : selectedCellData.value}
+						category={gameState.categories[selectedCellData.categoryIndex].title}
+						currentPlayer={gameState.players[gameState.currentPlayerIndex]}
+						onCorrect={handleCorrectAnswer}
+						onIncorrect={handleIncorrectAnswer}
+						onClose={handleCloseModal}
+					/>
+				)}
+			</>
+		);
+	}
+
+	if (gameState.phase === GAME_PHASES.FINAL_JEOPARDY) {
+		const category = gameState.categories[0];
+		const clue = category.clues[0];
+
+		return (
+			<FinalJeopardyModal
+				category={category.title}
+				clue={clue}
+				players={gameState.players}
+				onComplete={handleFinalJeopardyComplete}
+			/>
+		);
+	}
+
+	if (gameState.phase === GAME_PHASES.COMPLETE) {
+		return (
+			<GameComplete
 				gameState={gameState}
-				onCellClick={handleCellClick}
+				onNewGame={handleNewGame}
 			/>
 		);
 	}
