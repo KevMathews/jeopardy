@@ -3,7 +3,9 @@
 .gameBoardContainer {
 	width: 100%;
 	min-height: 100vh;
-	background-color: $primary-blue;
+	background: url('https://i.imgur.com/7BwlRhZ.png');
+	background-color: blue;
+	background-size: cover;
 	padding: 20px;
 	box-sizing: border-box;
 }
@@ -178,7 +180,9 @@
 .gameSetupContainer {
 	width: 100%;
 	min-height: 100vh;
-	background-color: $primary-blue;
+	background: url('https://i.imgur.com/7BwlRhZ.png');
+	background-color: blue;
+	background-size: cover;
 	display: flex;
 	align-items: center;
 	justify-content: center;
