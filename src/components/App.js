@@ -120,8 +120,12 @@ export default function App(props) {
 			dailyDoubleWager
 		);
 		setGameState(updatedState);
-		setSelectedCellData(null);
-		setDailyDoubleWager(null);
+
+		// Delay closing modal by 2 seconds on incorrect answer
+		setTimeout(() => {
+			setSelectedCellData(null);
+			setDailyDoubleWager(null);
+		}, 2000);
 	};
 
 	const handleCloseModal = () => {

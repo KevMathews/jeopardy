@@ -15,6 +15,7 @@ export default function QuestionModal({
 	const [timeRemaining, setTimeRemaining] = useState(TIMER_DURATION);
 	const [isTimerActive, setIsTimerActive] = useState(true);
 	const [timedOut, setTimedOut] = useState(false);
+	const [answerSubmitted, setAnswerSubmitted] = useState(false);
 	const timerRef = useRef(null);
 	const startTimeRef = useRef(Date.now());
 	const buzzerRef = useRef(null);
@@ -90,6 +91,16 @@ export default function QuestionModal({
 		}
 	};
 
+	const handleCorrect = () => {
+		setAnswerSubmitted(true);
+		onCorrect();
+	};
+
+	const handleIncorrect = () => {
+		setAnswerSubmitted(true);
+		onIncorrect();
+	};
+
 	const timerPercentage = (timeRemaining / TIMER_DURATION) * 100;
 
 	return (
@@ -142,13 +153,15 @@ export default function QuestionModal({
 								<div className="modalActions">
 									<button
 										className="modalButton correctButton"
-										onClick={onCorrect}
+										onClick={handleCorrect}
+										disabled={answerSubmitted}
 									>
 										✓ Correct
 									</button>
 									<button
 										className="modalButton incorrectButton"
-										onClick={onIncorrect}
+										onClick={handleIncorrect}
+										disabled={answerSubmitted}
 									>
 										✗ Incorrect
 									</button>
