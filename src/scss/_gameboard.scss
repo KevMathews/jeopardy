@@ -736,13 +736,14 @@
 		#ff0048 100%);
 	background-size: 200% 100%;
 	border-radius: 10px;
-	transition: width 0.1s linear;
+	transition: transform 0.1s linear;
 	position: relative;
 	box-shadow: 0 0 15px rgba(255, 0, 72, 0.8),
 	            0 0 30px rgba(255, 0, 72, 0.5),
 	            inset 0 1px 3px rgba(255, 255, 255, 0.3);
 	animation: timerGlow 1s ease-in-out infinite;
 	transform-origin: center;
+	width: 100%;
 
 	&::before {
 		content: '';

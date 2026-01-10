@@ -31,6 +31,8 @@ export default function QuestionModal({
 				timerRef.current = requestAnimationFrame(updateTimer);
 			} else {
 				setIsTimerActive(false);
+				// Timer expired - player loses points
+				onIncorrect();
 			}
 		};
 
@@ -41,7 +43,7 @@ export default function QuestionModal({
 				cancelAnimationFrame(timerRef.current);
 			}
 		};
-	}, []);
+	}, [onIncorrect]);
 
 	const handleShowAnswer = () => {
 		setShowAnswer(true);
@@ -76,7 +78,7 @@ export default function QuestionModal({
 							<div className="timerBar">
 								<div
 									className="timerProgress"
-									style={{ width: `${timerPercentage}%` }}
+									style={{ transform: `scaleX(${timerPercentage / 100})` }}
 								/>
 							</div>
 						</div>
