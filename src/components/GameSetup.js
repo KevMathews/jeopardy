@@ -82,9 +82,6 @@ export default function GameSetup({ onStartGame }) {
 					>
 						<h2>Start Game</h2>
 					</button>
-					<p className="setupHint">
-						Leave names blank to use default player names
-					</p>
 				</div>
 			</div>
 		</div>
