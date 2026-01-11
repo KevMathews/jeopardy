@@ -1,11 +1,19 @@
 import React from 'react';
+import { playHoverSound, playClickSound } from '../utils/audioEffects';
+import VolumeControl from './VolumeControl';
 
 export default function PlayerScoreboard({ players, currentPlayerIndex, onNewGame }) {
+	const handleNewGame = () => {
+		playClickSound();
+		onNewGame();
+	};
+
 	return (
 		<div className="playerScoreboard">
 			<div className="scoreboardTitle">
+				<VolumeControl />
 				Players
-				<button className="newGameButtonSmall" onClick={onNewGame}>
+				<button className="newGameButtonSmall" onClick={handleNewGame} onMouseEnter={playHoverSound}>
 					New Game
 				</button>
 			</div>

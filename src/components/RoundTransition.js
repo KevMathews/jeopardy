@@ -1,10 +1,15 @@
 import React from 'react';
+import { playHoverSound, playClickSound } from '../utils/audioEffects';
 
 export default function RoundTransition({
 	currentRound,
 	players,
 	onContinue
 }) {
+	const handleContinue = () => {
+		playClickSound();
+		onContinue();
+	};
 	// Sort players by score descending
 	const sortedPlayers = [...players].sort((a, b) => b.score - a.score);
 	const nextRound = currentRound === 1 ? 2 : 'Final Jeopardy';
@@ -43,7 +48,8 @@ export default function RoundTransition({
 
 					<button
 						className="continueButton"
-						onClick={onContinue}
+						onClick={handleContinue}
+						onMouseEnter={playHoverSound}
 					>
 						Continue to {nextRound}
 					</button>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { playHoverSound, playClickSound } from '../utils/audioEffects';
 
 const TIMER_DURATION = 5000; // 5 seconds in milliseconds
 
@@ -295,6 +296,7 @@ export default function QuestionModal({
 	};
 
 	const handleShowAnswer = () => {
+		playClickSound();
 		setShowAnswer(true);
 
 		// Stop timer completely - unlimited time to judge right/wrong
@@ -305,6 +307,7 @@ export default function QuestionModal({
 	};
 
 	const handleCorrect = () => {
+		playClickSound();
 		setAnswerSubmitted(true);
 		setCorrectSubmitted(true);
 		setIsTimerActive(false);
@@ -323,6 +326,7 @@ export default function QuestionModal({
 	};
 
 	const handleIncorrect = () => {
+		playClickSound();
 		setAnswerSubmitted(true);
 		setIncorrectSubmitted(true);
 		setIsTimerActive(false);
@@ -346,7 +350,7 @@ export default function QuestionModal({
 	return (
 		<div className="modalOverlay" onClick={onClose}>
 			<div className={`questionModal ${timedOut ? 'timedOut' : ''} ${correctSubmitted ? 'correctSubmitted' : ''} ${incorrectSubmitted ? 'incorrectSubmitted' : ''} ${allWrong ? 'allWrong' : ''}`} onClick={(e) => e.stopPropagation()}>
-				<button className="modalCloseButton" onClick={onClose}>
+				<button className="modalCloseButton" onClick={() => { playClickSound(); onClose(); }} onMouseEnter={playHoverSound}>
 					×
 				</button>
 
@@ -424,7 +428,8 @@ export default function QuestionModal({
 									<button
 										key={playerId}
 										className={`buzzInButton player-${playerId}`}
-										onClick={() => onBuzzIn(playerId)}
+										onClick={() => { playClickSound(); onBuzzIn(playerId); }}
+										onMouseEnter={playHoverSound}
 									>
 										🔔 BUZZ IN - {player.name}
 									</button>
@@ -440,6 +445,7 @@ export default function QuestionModal({
 								<button
 									className="modalButton showAnswerButton"
 									onClick={handleShowAnswer}
+									onMouseEnter={playHoverSound}
 								>
 									Show Answer
 								</button>
@@ -457,6 +463,7 @@ export default function QuestionModal({
 										className="modalButton correctButton"
 										onClick={handleCorrect}
 										disabled={answerSubmitted}
+										onMouseEnter={playHoverSound}
 									>
 										✓ Correct
 									</button>
@@ -464,6 +471,7 @@ export default function QuestionModal({
 										className="modalButton incorrectButton"
 										onClick={handleIncorrect}
 										disabled={answerSubmitted}
+										onMouseEnter={playHoverSound}
 									>
 										✗ Incorrect
 									</button>

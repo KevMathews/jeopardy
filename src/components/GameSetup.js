@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { PLAYER_CONFIG } from '../constants/gameConfig';
+import { playHoverSound, playClickSound } from '../utils/audioEffects';
 
 export default function GameSetup({ onStartGame }) {
 	const [playerCount, setPlayerCount] = useState(1);
 	const [playerNames, setPlayerNames] = useState(['']);
 
 	const handlePlayerCountChange = (count) => {
+		playClickSound();
 		setPlayerCount(count);
 		const newNames = Array(count).fill('').map((_, i) =>
 			playerNames[i] || ''
@@ -20,6 +22,7 @@ export default function GameSetup({ onStartGame }) {
 	};
 
 	const handleStartGame = () => {
+		playClickSound();
 		const names = playerNames.map((name, index) =>
 			name.trim() || `Player ${index + 1}`
 		);
@@ -41,6 +44,7 @@ export default function GameSetup({ onStartGame }) {
 								key={count}
 								className={`playerCountButton ${playerCount === count ? 'active' : ''}`}
 								onClick={() => handlePlayerCountChange(count)}
+								onMouseEnter={playHoverSound}
 							>
 								{count} Player{count > 1 ? 's' : ''}
 							</button>
@@ -74,6 +78,7 @@ export default function GameSetup({ onStartGame }) {
 						className="startGameButton"
 						onClick={handleStartGame}
 						disabled={!canStartGame}
+						onMouseEnter={canStartGame ? playHoverSound : undefined}
 					>
 						<h2>Start Game</h2>
 					</button>

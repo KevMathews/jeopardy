@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { playHoverSound, playClickSound } from '../utils/audioEffects';
 
 export default function DailyDoubleModal({
 	category,
@@ -28,7 +29,13 @@ export default function DailyDoubleModal({
 		setError('');
 	};
 
+	const handleClose = () => {
+		playClickSound();
+		onClose();
+	};
+
 	const handleSubmit = () => {
+		playClickSound();
 		const wagerAmount = parseInt(wager, 10);
 
 		if (isNaN(wagerAmount)) {
@@ -56,9 +63,9 @@ export default function DailyDoubleModal({
 	};
 
 	return (
-		<div className="modalOverlay" onClick={onClose}>
+		<div className="modalOverlay" onClick={handleClose}>
 			<div className="dailyDoubleModal" onClick={(e) => e.stopPropagation()}>
-				<button className="modalCloseButton" onClick={onClose}>
+				<button className="modalCloseButton" onClick={handleClose} onMouseEnter={playHoverSound}>
 					×
 				</button>
 
@@ -104,6 +111,7 @@ export default function DailyDoubleModal({
 					<button
 						className="modalButton submitWagerButton"
 						onClick={handleSubmit}
+						onMouseEnter={playHoverSound}
 					>
 						Submit Wager
 					</button>

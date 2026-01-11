@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { playHoverSound, playClickSound } from '../utils/audioEffects';
 
 const STEPS = {
 	INTRO: 'intro',
@@ -28,10 +29,12 @@ export default function FinalJeopardyModal({
 	const eligiblePlayers = players.filter(p => p.score > 0);
 
 	const handleStartWagers = () => {
+		playClickSound();
 		setStep(STEPS.WAGERS);
 	};
 
 	const handleWagerSubmit = () => {
+		playClickSound();
 		const player = eligiblePlayers[currentWagerPlayer];
 		const wagerAmount = parseInt(wagerInput, 10);
 		const maxWager = player.score;
@@ -68,15 +71,18 @@ export default function FinalJeopardyModal({
 	};
 
 	const handleShowQuestion = () => {
+		playClickSound();
 		setShowQuestion(true);
 	};
 
 	const handleShowAnswer = () => {
+		playClickSound();
 		setShowAnswer(true);
 		setStep(STEPS.ANSWERS);
 	};
 
 	const handlePlayerAnswer = (isCorrect) => {
+		playClickSound();
 		const player = eligiblePlayers[currentAnswerPlayer];
 		const wager = wagers[player.id];
 
@@ -124,6 +130,7 @@ export default function FinalJeopardyModal({
 						<button
 							className="modalButton fjContinueButton"
 							onClick={handleStartWagers}
+							onMouseEnter={playHoverSound}
 						>
 							Begin Final Jeopardy
 						</button>
@@ -175,6 +182,7 @@ export default function FinalJeopardyModal({
 						<button
 							className="modalButton submitWagerButton"
 							onClick={handleWagerSubmit}
+							onMouseEnter={playHoverSound}
 						>
 							Submit Wager
 						</button>
@@ -200,6 +208,7 @@ export default function FinalJeopardyModal({
 								<button
 									className="modalButton showAnswerButton"
 									onClick={handleShowQuestion}
+									onMouseEnter={playHoverSound}
 								>
 									Show Question
 								</button>
@@ -213,6 +222,7 @@ export default function FinalJeopardyModal({
 									<button
 										className="modalButton showAnswerButton"
 										onClick={handleShowAnswer}
+										onMouseEnter={playHoverSound}
 									>
 										Show Answer
 									</button>
@@ -254,12 +264,14 @@ export default function FinalJeopardyModal({
 							<button
 								className="modalButton correctButton"
 								onClick={() => handlePlayerAnswer(true)}
+								onMouseEnter={playHoverSound}
 							>
 								✓ Correct
 							</button>
 							<button
 								className="modalButton incorrectButton"
 								onClick={() => handlePlayerAnswer(false)}
+								onMouseEnter={playHoverSound}
 							>
 								✗ Incorrect
 							</button>

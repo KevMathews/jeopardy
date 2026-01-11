@@ -120,9 +120,22 @@
 		margin-bottom: 8px;
 
 		.scoreboardTitle {
-			font-size: 14px;
+			display: grid !important;
+			grid-template-columns: 1fr auto 1fr !important;
+			font-size: 18px !important;
 			margin-bottom: 6px;
 			letter-spacing: 0.5px;
+			gap: 8px !important;
+
+			.volumeControl {
+				justify-self: end !important;
+			}
+
+			.newGameButtonSmall {
+				justify-self: start !important;
+				padding: 4px 8px !important;
+				font-size: 10px !important;
+			}
 		}
 
 		.playerList {
@@ -150,6 +163,31 @@
 				font-size: 16px;
 			}
 		}
+	}
+
+	// Volume Control Mobile Styles
+	.volumeControl {
+		margin-right: 8px;
+		gap: 6px;
+
+		.volumeSlider {
+			width: 60px !important;
+			height: 5px !important;
+		}
+
+		.volumeSlider::-webkit-slider-thumb {
+			width: 12px !important;
+			height: 12px !important;
+		}
+
+		.volumeSlider::-moz-range-thumb {
+			width: 12px !important;
+			height: 12px !important;
+		}
+	}
+
+	.volumeIcon {
+		font-size: 14px !important;
 	}
 
 	.gameBoard {
@@ -451,7 +489,20 @@
 		padding: 6px 8px;
 
 		.scoreboardTitle {
-			font-size: 13px;
+			display: grid !important;
+			grid-template-columns: 1fr auto 1fr !important;
+			font-size: 18px !important;
+			gap: 8px !important;
+
+			.volumeControl {
+				justify-self: end !important;
+			}
+
+			.newGameButtonSmall {
+				justify-self: start !important;
+				padding: 4px 8px !important;
+				font-size: 10px !important;
+			}
 		}
 
 		.playerCard {

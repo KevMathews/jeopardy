@@ -1,7 +1,12 @@
 import React from 'react';
 import { getWinners } from '../utils/gameStateManager';
+import { playHoverSound, playClickSound } from '../utils/audioEffects';
 
 export default function GameComplete({ gameState, onNewGame }) {
+	const handlePlayAgain = () => {
+		playClickSound();
+		onNewGame();
+	};
 	const winners = getWinners(gameState);
 	const sortedPlayers = [...gameState.players].sort((a, b) => b.score - a.score);
 	const isMultiWinner = winners.length > 1;
@@ -82,7 +87,8 @@ export default function GameComplete({ gameState, onNewGame }) {
 					<div className="gameCompleteActions">
 						<button
 							className="playAgainButton"
-							onClick={onNewGame}
+							onClick={handlePlayAgain}
+							onMouseEnter={playHoverSound}
 						>
 							Play Again
 						</button>
