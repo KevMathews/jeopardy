@@ -1899,3 +1899,237 @@
 	25% { transform: translateX(-10px); }
 	75% { transform: translateX(10px); }
 }
+
+// Mobile Responsive Styles - Extremely Aggressive Spacing Reduction for iPhone SE
+@media (max-width: $breakpoint-mobile) {
+	// Modal - Make height fully responsive, reduce padding drastically
+	.questionModal {
+		padding: 15px;
+		max-height: 92vh; // Use more of screen height
+		border-width: 3px;
+	}
+
+	// Close Button - Smaller
+	.modalCloseButton {
+		width: 30px;
+		height: 30px;
+		font-size: 20px;
+		top: 8px;
+		right: 8px;
+	}
+
+	// Modal Header - Minimal spacing
+	.modalHeader {
+		margin-bottom: 6px;
+		padding-bottom: 6px;
+		border-bottom-width: 2px;
+	}
+
+	.modalCategory {
+		font-size: 13px;
+		letter-spacing: 0.5px;
+	}
+
+	.modalValue {
+		font-size: 18px;
+	}
+
+	// Modal Content - Minimal gap between elements
+	.modalContent {
+		gap: 6px;
+	}
+
+	// Current Player Status - Ultra compact
+	.modalCurrentPlayer {
+		font-size: 12px;
+		padding: 4px 6px;
+		border-radius: 6px;
+	}
+
+	// Timer Container - Minimal margins
+	.timerContainer {
+		margin: 4px 0;
+
+		.timerBar {
+			height: 6px; // Thinner timer bar
+		}
+	}
+
+	// Player Status Cards - Ultra compact for 3 players
+	.playerBuzzStatus {
+		gap: 4px;
+		margin: 4px 0;
+
+		.playerStatusCard {
+			padding: 4px;
+			border-width: 2px;
+			border-radius: 4px;
+
+			.playerStatusName {
+				font-size: 11px;
+				margin-bottom: 2px;
+			}
+
+			.playerStatusIndicator {
+				font-size: 9px;
+			}
+		}
+	}
+
+	// Question Text - Very compact
+	.modalQuestion {
+		font-size: 14px;
+		padding: 8px;
+		line-height: 1.25;
+		min-height: 50px;
+		border-width: 2px;
+	}
+
+	// Answer Text - Compact
+	.modalAnswer {
+		font-size: 16px;
+		padding: 8px;
+		border-width: 2px;
+	}
+
+	// Buttons - Very compact
+	.modalButton {
+		font-size: 13px;
+		padding: 6px 12px;
+		border-radius: 6px;
+	}
+
+	.showAnswerButton {
+		font-size: 13px;
+		padding: 6px 12px;
+		border-radius: 6px;
+	}
+
+	// Buzz-in Buttons - Minimal spacing
+	.buzzInButtons {
+		gap: 4px;
+
+		.buzzInButton {
+			font-size: 12px;
+			padding: 6px 10px;
+			border-radius: 6px;
+		}
+	}
+
+	// Modal Actions - Minimal gap
+	.modalActions {
+		gap: 6px;
+	}
+
+	// Timeout/All Wrong Messages - Very compact
+	.timeoutMessage,
+	.allWrongMessage {
+		font-size: 14px;
+		padding: 8px;
+		border-width: 2px;
+		letter-spacing: 1px;
+	}
+}
+
+// Extra small devices (iPhone SE) - Ultra aggressive - must fit!
+@media (max-width: 375px) {
+	.questionModal {
+		padding: 8px;
+		max-height: 96vh; // Use almost entire screen
+		border-width: 2px;
+	}
+
+	.modalCloseButton {
+		width: 26px;
+		height: 26px;
+		font-size: 18px;
+		top: 5px;
+		right: 5px;
+	}
+
+	.modalHeader {
+		margin-bottom: 3px;
+		padding-bottom: 3px;
+	}
+
+	.modalCategory {
+		font-size: 12px;
+	}
+
+	.modalValue {
+		font-size: 16px;
+	}
+
+	.modalContent {
+		gap: 3px;
+	}
+
+	.modalCurrentPlayer {
+		font-size: 10px;
+		padding: 2px 4px;
+	}
+
+	.timerContainer {
+		margin: 2px 0;
+
+		.timerBar {
+			height: 4px; // Even thinner
+		}
+	}
+
+	.playerBuzzStatus {
+		gap: 2px;
+		margin: 2px 0;
+
+		.playerStatusCard {
+			padding: 2px;
+			border-width: 1px;
+
+			.playerStatusName {
+				font-size: 9px;
+				margin-bottom: 1px;
+			}
+
+			.playerStatusIndicator {
+				font-size: 7px;
+			}
+		}
+	}
+
+	.modalQuestion {
+		font-size: 12px;
+		padding: 5px;
+		min-height: 35px;
+		line-height: 1.2;
+	}
+
+	.modalAnswer {
+		font-size: 13px;
+		padding: 5px;
+	}
+
+	.modalButton,
+	.showAnswerButton {
+		font-size: 11px;
+		padding: 4px 8px;
+	}
+
+	.buzzInButtons {
+		gap: 3px;
+
+		.buzzInButton {
+			font-size: 10px;
+			padding: 4px 6px;
+		}
+	}
+
+	.modalActions {
+		gap: 4px;
+	}
+
+	.timeoutMessage,
+	.allWrongMessage {
+		font-size: 12px;
+		padding: 5px;
+	}
+}

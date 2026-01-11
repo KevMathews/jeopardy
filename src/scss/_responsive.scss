@@ -533,20 +533,8 @@
 	}
 
 	.playerBuzzStatus {
-		flex-direction: column;
-		gap: 8px;
-
-		.playerStatusCard {
-			padding: 10px;
-
-			.playerStatusName {
-				font-size: 14px;
-			}
-
-			.playerStatusIndicator {
-				font-size: 12px;
-			}
-		}
+		flex-direction: row; // Keep horizontal for space efficiency
+		// Spacing handled by _gameboard.scss mobile styles
 	}
 
 	.allWrongMessage {

@@ -32,6 +32,15 @@ export default function QuestionModal({
 
 	// Timer effect - runs continuously, resets at key moments
 	useEffect(() => {
+		// Don't start timer if answer is already shown (judgment phase - unlimited time)
+		if (showAnswer) {
+			setIsTimerActive(false);
+			if (timerRef.current) {
+				cancelAnimationFrame(timerRef.current);
+			}
+			return;
+		}
+
 		// Start or resume timer
 		startTimeRef.current = Date.now();
 		setIsTimerActive(true);
@@ -75,6 +84,16 @@ export default function QuestionModal({
 					// Mark as incorrect immediately - this will trigger auto-reset if players remain
 					onIncorrect(localBuzzerPlayerIdRef.current);
 				}
+				// Daily Double timeout before showing answer
+				else if (isDailyDouble) {
+					console.log('✅ Branch: DAILY DOUBLE TIMEOUT - Calling onIncorrect(' + players[0].id + ')');
+					setTimedOut(true);
+					playBuzzer();
+					// Immediate visual feedback, reduced delay
+					setTimeout(() => {
+						onIncorrect(players[0].id);
+					}, 1500);
+				}
 				// Nobody buzzed - just close
 				else {
 					console.log('❌ Branch: NOBODY BUZZED - Calling onClose()');
@@ -90,7 +109,7 @@ export default function QuestionModal({
 				cancelAnimationFrame(timerRef.current);
 			}
 		};
-	}, [activeQuestion, isDailyDouble, onIncorrect, onClose, showAnswer, activeTimerDuration]);
+	}, [activeQuestion, isDailyDouble, onIncorrect, onClose, showAnswer, activeTimerDuration, players]);
 
 
 	// Auto-reset timer when buzzer unlocks after incorrect answer (Phase 1)
@@ -278,17 +297,11 @@ export default function QuestionModal({
 	const handleShowAnswer = () => {
 		setShowAnswer(true);
 
-		// Calculate time remaining for judgment
-		// Give them remaining time or at least 3 seconds to judge
-		const MIN_JUDGMENT_TIME = 3000;
-		// Use the captured buzz-in time, not current timeRemaining
-		const judgmentTime = Math.max(buzzInTimeRemaining || MIN_JUDGMENT_TIME, MIN_JUDGMENT_TIME);
-
-		// Restart timer for judgment period with new duration
-		setActiveTimerDuration(judgmentTime);
-		setTimeRemaining(judgmentTime);
-		startTimeRef.current = Date.now();
-		setIsTimerActive(true);
+		// Stop timer completely - unlimited time to judge right/wrong
+		setIsTimerActive(false);
+		if (timerRef.current) {
+			cancelAnimationFrame(timerRef.current);
+		}
 	};
 
 	const handleCorrect = () => {
