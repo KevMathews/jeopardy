@@ -24,21 +24,14 @@ export default function QuestionModal({
 	const [incorrectSubmitted, setIncorrectSubmitted] = useState(false);
 	const [allWrong, setAllWrong] = useState(false);
 	const [activeTimerDuration, setActiveTimerDuration] = useState(TIMER_DURATION); // Track current timer duration
+	const [buzzInTimeRemaining, setBuzzInTimeRemaining] = useState(null); // Track time remaining when player buzzed
+	const hasBuzzedInRef = useRef(false); // Track if someone has buzzed in (useRef to avoid stale closures)
+	const localBuzzerPlayerIdRef = useRef(null); // Store buzzer's ID locally (useRef to avoid stale closures)
 	const timerRef = useRef(null);
 	const startTimeRef = useRef(Date.now());
 
-	// Timer effect - pause when someone buzzes but hasn't shown answer yet
+	// Timer effect - runs continuously, resets at key moments
 	useEffect(() => {
-		// Pause timer ONLY if someone buzzed but hasn't shown answer yet
-		// Once answer is shown, judgment timer should run
-		if (activeQuestion && activeQuestion.isLocked && !showAnswer) {
-			if (timerRef.current) {
-				cancelAnimationFrame(timerRef.current);
-			}
-			setIsTimerActive(false);
-			return;
-		}
-
 		// Start or resume timer
 		startTimeRef.current = Date.now();
 		setIsTimerActive(true);
@@ -54,27 +47,37 @@ export default function QuestionModal({
 				// Timer expired
 				setIsTimerActive(false);
 
+				console.log('🔴 TIMER EXPIRED - DEBUG INFO:');
+				console.log('  showAnswer:', showAnswer);
+				console.log('  hasBuzzedInRef.current:', hasBuzzedInRef.current);
+				console.log('  localBuzzerPlayerIdRef.current:', localBuzzerPlayerIdRef.current);
+				console.log('  activeQuestion:', activeQuestion);
+				console.log('  activeQuestion?.currentBuzzer:', activeQuestion?.currentBuzzer);
+				console.log('  activeQuestion?.isLocked:', activeQuestion?.isLocked);
+
 				// If answer already shown (judgment phase timeout)
 				if (showAnswer) {
+					console.log('✅ Branch: JUDGMENT PHASE TIMEOUT');
 					// Judgment timer expired - treat as incorrect
 					setTimedOut(true);
 					playBuzzer();
 					const playerId = isDailyDouble ? players[0].id : (activeQuestion?.currentBuzzer || players[0].id);
+
+					// Immediate visual feedback, reduced delay
 					setTimeout(() => {
 						onIncorrect(playerId);
-					}, 2000);
+					}, 1500);
 				}
-				// If someone buzzed but didn't show answer yet
-				else if (activeQuestion && activeQuestion.currentBuzzer) {
-					setTimedOut(true);
-					setShowAnswer(true);
+				// If someone buzzed in (use ref to get current value)
+				else if (hasBuzzedInRef.current && localBuzzerPlayerIdRef.current) {
+					console.log('✅ Branch: BUZZED IN TIMEOUT - Calling onIncorrect(' + localBuzzerPlayerIdRef.current + ')');
 					playBuzzer();
-					setTimeout(() => {
-						onIncorrect(activeQuestion.currentBuzzer);
-					}, 3000);
+					// Mark as incorrect immediately - this will trigger auto-reset if players remain
+					onIncorrect(localBuzzerPlayerIdRef.current);
 				}
 				// Nobody buzzed - just close
 				else {
+					console.log('❌ Branch: NOBODY BUZZED - Calling onClose()');
 					onClose();
 				}
 			}
@@ -88,6 +91,92 @@ export default function QuestionModal({
 			}
 		};
 	}, [activeQuestion, isDailyDouble, onIncorrect, onClose, showAnswer, activeTimerDuration]);
+
+
+	// Auto-reset timer when buzzer unlocks after incorrect answer (Phase 1)
+	const prevRemainingPlayersRef = useRef(null);
+	useEffect(() => {
+		if (!activeQuestion) return;
+
+		const currentRemainingCount = activeQuestion.remainingPlayers.length;
+
+		// Only reset if:
+		// 1. Buzzer is unlocked (!isLocked)
+		// 2. Players remain (length > 0)
+		// 3. Player count DECREASED (someone was removed after getting it wrong)
+		if (!activeQuestion.isLocked &&
+		    currentRemainingCount > 0 &&
+		    prevRemainingPlayersRef.current !== null &&
+		    currentRemainingCount < prevRemainingPlayersRef.current) {
+
+			console.log('🔄 AUTO-RESET TRIGGERED: Player was removed, resetting for remaining players');
+			console.log('  Clearing hasBuzzedIn and localBuzzerPlayerId');
+
+			// Reset to full 5 seconds for remaining players
+			setActiveTimerDuration(TIMER_DURATION);
+			setTimeRemaining(TIMER_DURATION);
+			setShowAnswer(false);
+			setAnswerSubmitted(false);
+			setCorrectSubmitted(false);
+			setIncorrectSubmitted(false);
+			hasBuzzedInRef.current = false; // Reset buzz-in flag for next player
+			localBuzzerPlayerIdRef.current = null; // Reset local buzzer ID
+			setBuzzState('BUZZER_ACTIVE');
+			startTimeRef.current = Date.now();
+			setIsTimerActive(true);
+		}
+
+		// Update previous count
+		prevRemainingPlayersRef.current = currentRemainingCount;
+	}, [activeQuestion?.isLocked, activeQuestion?.remainingPlayers.length]);
+
+	// Restart timer when player buzzes in (Phase 2)
+	const buzzInTriggered = useRef(false);
+	useEffect(() => {
+		if (!activeQuestion) return;
+		if (isDailyDouble) return; // Daily Double uses different logic
+
+		// When player buzzes in, give them fresh 5 seconds to answer
+		if (activeQuestion.isLocked && !showAnswer && !answerSubmitted) {
+			// Only trigger once per buzz-in
+			if (!buzzInTriggered.current) {
+				buzzInTriggered.current = true;
+
+				// Cancel current timer animation frame
+				if (timerRef.current) {
+					cancelAnimationFrame(timerRef.current);
+				}
+
+				// Mark that someone has buzzed in (local state for timeout check)
+				console.log('🟢 PLAYER BUZZED IN:');
+				console.log('  Setting hasBuzzedIn = true');
+				console.log('  Setting localBuzzerPlayerId =', activeQuestion.currentBuzzer);
+				hasBuzzedInRef.current = true;
+				localBuzzerPlayerIdRef.current = activeQuestion.currentBuzzer;
+
+				// Reset to full 5 seconds for answering
+				setActiveTimerDuration(TIMER_DURATION);
+				setTimeRemaining(TIMER_DURATION);
+				startTimeRef.current = Date.now();
+				setIsTimerActive(true);
+			}
+		} else {
+			// Reset flag when not locked
+			buzzInTriggered.current = false;
+		}
+	}, [activeQuestion?.isLocked, activeQuestion?.currentBuzzer, showAnswer, answerSubmitted, isDailyDouble]);
+
+	// Watch for all players wrong (Phase 6)
+	useEffect(() => {
+		if (activeQuestion && activeQuestion.remainingPlayers.length === 0 && !allWrong && !isDailyDouble) {
+			setAllWrong(true);
+			setShowAnswer(true); // Show answer immediately
+			setIsTimerActive(false);
+			if (timerRef.current) {
+				cancelAnimationFrame(timerRef.current);
+			}
+		}
+	}, [activeQuestion?.remainingPlayers.length, allWrong, isDailyDouble]);
 
 	// Keyboard listener for buzz-ins
 	useEffect(() => {
@@ -192,7 +281,8 @@ export default function QuestionModal({
 		// Calculate time remaining for judgment
 		// Give them remaining time or at least 3 seconds to judge
 		const MIN_JUDGMENT_TIME = 3000;
-		const judgmentTime = Math.max(timeRemaining, MIN_JUDGMENT_TIME);
+		// Use the captured buzz-in time, not current timeRemaining
+		const judgmentTime = Math.max(buzzInTimeRemaining || MIN_JUDGMENT_TIME, MIN_JUDGMENT_TIME);
 
 		// Restart timer for judgment period with new duration
 		setActiveTimerDuration(judgmentTime);
@@ -269,7 +359,7 @@ export default function QuestionModal({
 					)}
 
 					{/* Timer Bar */}
-					{!answerSubmitted && !timedOut && (
+					{!timedOut && !correctSubmitted && (
 						<div className="timerContainer">
 							<div className="timerBar">
 								<div

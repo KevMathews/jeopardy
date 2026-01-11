@@ -1,9 +1,14 @@
 import React from 'react';
 
-export default function PlayerScoreboard({ players, currentPlayerIndex }) {
+export default function PlayerScoreboard({ players, currentPlayerIndex, onNewGame }) {
 	return (
 		<div className="playerScoreboard">
-			<div className="scoreboardTitle">Players</div>
+			<div className="scoreboardTitle">
+				Players
+				<button className="newGameButtonSmall" onClick={onNewGame}>
+					New Game
+				</button>
+			</div>
 			<div className="playerList">
 				{players.map((player, index) => {
 					const isCurrentPlayer = index === currentPlayerIndex;

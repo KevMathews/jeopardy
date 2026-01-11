@@ -284,6 +284,7 @@ export default function App(props) {
 				<GameBoard
 					gameState={gameState}
 					onCellClick={handleCellClick}
+					onNewGame={handleNewGame}
 				/>
 				{/* Show Round Transition when round is complete */}
 				{showRoundTransition && (

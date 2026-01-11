@@ -47,14 +47,41 @@
 	animation: fadeIn 0.6s ease-out;
 
 	.scoreboardTitle {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 12px;
 		font-size: 28px;
 		font-weight: bold;
 		color: $primary-blue;
 		margin-bottom: 18px;
-		text-align: center;
 		text-transform: uppercase;
 		letter-spacing: 2px;
 		text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+
+		.newGameButtonSmall {
+			padding: 6px 12px;
+			font-size: 12px;
+			font-weight: bold;
+			color: $white;
+			background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+			border: 2px solid darken(#e74c3c, 10%);
+			border-radius: 6px;
+			cursor: pointer;
+			transition: all 0.2s ease;
+			text-transform: uppercase;
+			letter-spacing: 0.5px;
+
+			&:hover {
+				transform: translateY(-1px);
+				box-shadow: 0 3px 10px rgba(231, 76, 60, 0.5);
+				background: linear-gradient(135deg, #c0392b 0%, #a93226 100%);
+			}
+
+			&:active {
+				transform: translateY(0);
+			}
+		}
 	}
 
 	.playerList {

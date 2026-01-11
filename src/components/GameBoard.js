@@ -6,7 +6,8 @@ import { getRoundValues, getCellId, parseCellId } from '../constants/gameConfig'
 
 export default function GameBoard({
 	gameState,
-	onCellClick
+	onCellClick,
+	onNewGame
 }) {
 	const { categories, players, currentPlayerIndex, currentRound, answeredCells, dailyDoubleLocations } = gameState;
 	const roundValues = getRoundValues(currentRound);
@@ -40,6 +41,7 @@ export default function GameBoard({
 			<PlayerScoreboard
 				players={players}
 				currentPlayerIndex={currentPlayerIndex}
+				onNewGame={onNewGame}
 			/>
 
 			<div className="gameBoard">
