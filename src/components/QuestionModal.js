@@ -95,10 +95,16 @@ export default function QuestionModal({
 						onIncorrect(players[0].id);
 					}, 1500);
 				}
-				// Nobody buzzed - just close
+				// Nobody buzzed - show answer briefly then close
 				else {
-					console.log('❌ Branch: NOBODY BUZZED - Calling onClose()');
-					onClose();
+					console.log('❌ Branch: NOBODY BUZZED - Showing answer then closing');
+					setTimedOut(true);
+					playBuzzer();
+					setShowAnswer(true);
+					// Show answer for 3 seconds then close
+					setTimeout(() => {
+						onClose();
+					}, 3000);
 				}
 			}
 		};
