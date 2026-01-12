@@ -991,6 +991,22 @@
 	&:active {
 		transform: scale(0.97);
 	}
+
+	.buttonTextSmall {
+		display: block;
+		font-size: 12px;
+		text-transform: lowercase;
+		font-weight: normal;
+		opacity: 0.8;
+		margin-bottom: 4px;
+	}
+
+	.buttonTextLarge {
+		display: block;
+		font-size: 18px;
+		text-transform: uppercase;
+		font-weight: bold;
+	}
 }
 
 .showAnswerButton {

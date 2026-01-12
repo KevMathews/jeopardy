@@ -471,7 +471,8 @@ export default function QuestionModal({
 										disabled={answerSubmitted}
 										onMouseEnter={playHoverSound}
 									>
-										✓ Correct
+										<span className="buttonTextSmall">i got it</span>
+										<span className="buttonTextLarge">Correct</span>
 									</button>
 									<button
 										className="modalButton incorrectButton"
@@ -479,7 +480,8 @@ export default function QuestionModal({
 										disabled={answerSubmitted}
 										onMouseEnter={playHoverSound}
 									>
-										✗ Incorrect
+										<span className="buttonTextSmall">i didn't get it</span>
+										<span className="buttonTextLarge">Incorrect</span>
 									</button>
 								</div>
 							)}

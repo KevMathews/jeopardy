@@ -286,6 +286,15 @@
 		.modalButton {
 			padding: 14px 30px;
 			font-size: 16px;
+
+			.buttonTextSmall {
+				font-size: 10px;
+				margin-bottom: 2px;
+			}
+
+			.buttonTextLarge {
+				font-size: 14px;
+			}
 		}
 
 		.showAnswerButton {
