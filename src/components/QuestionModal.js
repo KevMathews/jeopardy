@@ -480,7 +480,7 @@ export default function QuestionModal({
 										disabled={answerSubmitted}
 										onMouseEnter={playHoverSound}
 									>
-										<span className="buttonTextSmall">i didn't get it</span>
+										<span className="buttonTextSmall">i got it</span>
 										<span className="buttonTextLarge">Incorrect</span>
 									</button>
 								</div>
