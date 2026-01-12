@@ -463,7 +463,7 @@ export default function QuestionModal({
 								{clue.answer}
 							</div>
 
-							{!timedOut && !allWrong && (
+							{!timedOut && !allWrong && !noBuzzedIn && (
 								<div className="modalActions">
 									<button
 										className="modalButton correctButton"
