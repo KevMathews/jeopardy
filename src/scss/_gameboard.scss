@@ -667,6 +667,13 @@
 		            inset 0 2px 4px rgba(255, 0, 72, 0.3);
 	}
 
+	&.noBuzzedIn {
+		border-color: $incorrect-red;
+		box-shadow: 0 20px 60px rgba(255, 0, 72, 0.6),
+		            0 0 0 3px $incorrect-red,
+		            inset 0 2px 4px rgba(255, 0, 72, 0.2);
+	}
+
 	&.correctSubmitted {
 		animation: greenFlash 0.5s ease-in-out 2;
 		border-color: $correct-green;
@@ -931,6 +938,22 @@
 	border: 3px solid darken($incorrect-red, 15%);
 	box-shadow: 0 0 30px rgba(255, 0, 72, 0.6);
 	animation: fadeInScale 0.4s ease-out, pulse 1s ease-in-out infinite;
+	text-transform: uppercase;
+	letter-spacing: 2px;
+	text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.noBuzzMessage {
+	font-size: 26px;
+	font-weight: bold;
+	color: $white;
+	text-align: center;
+	padding: 20px;
+	background: linear-gradient(135deg, $incorrect-red 0%, darken($incorrect-red, 10%) 100%);
+	border-radius: 12px;
+	border: 3px solid darken($incorrect-red, 15%);
+	box-shadow: 0 0 30px rgba(255, 0, 72, 0.6);
+	animation: fadeInScale 0.4s ease-out;
 	text-transform: uppercase;
 	letter-spacing: 2px;
 	text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
@@ -2033,6 +2056,7 @@
 
 	// Timeout/All Wrong Messages - Very compact
 	.timeoutMessage,
+	.noBuzzMessage,
 	.allWrongMessage {
 		font-size: 14px;
 		padding: 8px;
@@ -2138,6 +2162,7 @@
 	}
 
 	.timeoutMessage,
+	.noBuzzMessage,
 	.allWrongMessage {
 		font-size: 12px;
 		padding: 5px;

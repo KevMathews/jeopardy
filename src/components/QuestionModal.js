@@ -20,6 +20,7 @@ export default function QuestionModal({
 	const [timeRemaining, setTimeRemaining] = useState(TIMER_DURATION);
 	const [isTimerActive, setIsTimerActive] = useState(true);
 	const [timedOut, setTimedOut] = useState(false);
+	const [noBuzzedIn, setNoBuzzedIn] = useState(false);
 	const [answerSubmitted, setAnswerSubmitted] = useState(false);
 	const [correctSubmitted, setCorrectSubmitted] = useState(false);
 	const [incorrectSubmitted, setIncorrectSubmitted] = useState(false);
@@ -98,8 +99,7 @@ export default function QuestionModal({
 				// Nobody buzzed - show answer briefly then close
 				else {
 					console.log('❌ Branch: NOBODY BUZZED - Showing answer then closing');
-					setTimedOut(true);
-					playBuzzer();
+					setNoBuzzedIn(true);
 					setShowAnswer(true);
 					// Show answer for 3 seconds then close
 					setTimeout(() => {
@@ -355,7 +355,7 @@ export default function QuestionModal({
 
 	return (
 		<div className="modalOverlay" onClick={onClose}>
-			<div className={`questionModal ${timedOut ? 'timedOut' : ''} ${correctSubmitted ? 'correctSubmitted' : ''} ${incorrectSubmitted ? 'incorrectSubmitted' : ''} ${allWrong ? 'allWrong' : ''}`} onClick={(e) => e.stopPropagation()}>
+			<div className={`questionModal ${timedOut ? 'timedOut' : ''} ${noBuzzedIn ? 'noBuzzedIn' : ''} ${correctSubmitted ? 'correctSubmitted' : ''} ${incorrectSubmitted ? 'incorrectSubmitted' : ''} ${allWrong ? 'allWrong' : ''}`} onClick={(e) => e.stopPropagation()}>
 				<button className="modalCloseButton" onClick={() => { playClickSound(); onClose(); }} onMouseEnter={playHoverSound}>
 					×
 				</button>
@@ -487,6 +487,12 @@ export default function QuestionModal({
 							{timedOut && (
 								<div className="timeoutMessage">
 									TIME'S UP! Points deducted.
+								</div>
+							)}
+
+							{noBuzzedIn && (
+								<div className="noBuzzMessage">
+									NO ONE BUZZED IN
 								</div>
 							)}
 
